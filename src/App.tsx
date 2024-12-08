@@ -1,0 +1,33 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MyNavbar from './componentes/navbar/navbar.tsx';
+import HomePage from './componentes/homepage/homepage.tsx';
+import RegisterPage from './componentes/registro/registro.tsx';
+import LoginPage from './componentes/login/login.tsx';
+import Servicios from './componentes/servicios/servicios.tsx';
+import { LanguageProvider } from './idioma/preferencia-idioma.tsx';
+import ResetPassword from './componentes/reset-password/reset-password.tsx';
+import PerfilUsuario from './componentes/perfil/perfil.tsx';
+import PedirCita from './componentes/cita-previa/pedir-cita.tsx';
+
+const App: React.FC = () => {
+  return (
+    <LanguageProvider>
+      <Router>
+        <MyNavbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/servicios" element={<Servicios />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/profile" element={<PerfilUsuario />} />
+          <Route path="/pedir-cita" element={<PedirCita /> } />
+
+        </Routes>
+      </Router>
+    </LanguageProvider>
+  );
+};
+
+export default App;
