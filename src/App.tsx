@@ -9,6 +9,7 @@ import { LanguageProvider } from './idioma/preferencia-idioma.tsx';
 import ResetPassword from './componentes/reset-password/reset-password.tsx';
 import PerfilUsuario from './componentes/perfil/perfil.tsx';
 import PedirCita from './componentes/cita-previa/pedir-cita.tsx';
+import BuscarCentros from './componentes/buscar-centro/buscar-centro.tsx';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile" element={<PerfilUsuario />} />
           <Route path="/pedir-cita" element={<PedirCita /> } />
+          <Route path="/buscar-centros" element={<BuscarCentros />} />
 
         </Routes>
       </Router>

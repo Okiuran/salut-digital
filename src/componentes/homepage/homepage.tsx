@@ -133,17 +133,52 @@ const HomePage: React.FC = () => {
         ) : (
           <Card className="mt-3">
             <Card.Body>
-              <h3>{language === 'es' ? 'Cita Previa' : 'Cita Prèvia'}</h3>
-              <Button
-                variant="primary"
-                className="me-2"
-                onClick={() => navigate('/pedir-cita')}
-              >
-                {language === 'es' ? 'Pedir cita' : 'Pedir cita'}
-              </Button>
-              <Button variant="secondary" onClick={fetchAppointments}>
-                {language === 'es' ? 'Consultar otras citas' : 'Consultar altres cites'}
-              </Button>
+              <div className="d-flex flex-wrap justify-content-center mt-4">
+  {/* Opción 1: Pedir cita */}
+  <Card
+    className="m-3"
+    style={{ width: '18rem', cursor: 'pointer' }}
+    onClick={() => navigate('/pedir-cita')}
+  >
+    <Card.Img
+      variant="top"
+      src="https://via.placeholder.com/150"
+      alt={language === 'es' ? 'Pedir cita' : 'Pedir cita'}
+    />
+    <Card.Body className="text-center">
+      <Card.Title>{language === 'es' ? 'Pedir cita' : 'Demanar cita'}</Card.Title>
+      <Card.Text>
+        {language === 'es'
+          ? 'Solicitar cita previa.'
+          : 'Demanar cita prèvia.'}
+      </Card.Text>
+    </Card.Body>
+  </Card>
+
+  {/* Opción 2: Consultar citas */}
+  <Card
+    className="m-3"
+    style={{ width: '18rem', cursor: 'pointer' }}
+    onClick={fetchAppointments}
+  >
+    <Card.Img
+      variant="top"
+      src="https://via.placeholder.com/150"
+      alt={language === 'es' ? 'Consultar otras citas' : 'Consultar altres cites'}
+    />
+    <Card.Body className="text-center">
+      <Card.Title>
+        {language === 'es' ? 'Consultar otras citas' : 'Consultar altres cites'}
+      </Card.Title>
+      <Card.Text>
+        {language === 'es'
+          ? 'Revisa tus citas programadas.'
+          : 'Consulta les teves cites programades.'}
+      </Card.Text>
+    </Card.Body>
+  </Card>
+</div>
+
             </Card.Body>
           </Card>
         )}

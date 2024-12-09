@@ -20,8 +20,10 @@ const PedirCita: React.FC = () => {
   const profesionales = [
     language === 'es' ? 'Médico de cabecera' : 'Metge de capçalera',
     language === 'es' ? 'Enfermero/a' : 'Infermer/a',
-    language === 'es' ? 'Especialista' : 'Especialista',
-    language === 'es' ? 'Otro' : 'Altres',
+    language === 'es' ? 'Ginecología' : 'Ginecologia',
+    language === 'es' ? 'Extracciones' : 'Extraccions',
+    language === 'es' ? 'Vacuna gripe/covid' : 'Vacuna grip/covid',
+    language === 'es' ? 'Otros' : 'Altres',
   ];
 
   const opcionesPresencial = [
@@ -84,8 +86,8 @@ const PedirCita: React.FC = () => {
       {success && (
         <Alert variant="success">
           {language === 'es'
-            ? '¡Cita guardada con éxito! Redirigiendo al inicio...'
-            : 'Cita guardada amb èxit! Redirigint a l\'inici...'}
+            ? 'Cita registrada, redirigiendo al inicio'
+            : 'Cita registrada, redirigint a l\'inici...'}
         </Alert>
       )}
       <Form onSubmit={handleSubmit}>

@@ -83,6 +83,10 @@ const MyNavbar: React.FC = () => {
               }
               id="user-menu"
             >
+              <NavDropdown.Item as={Link} to="/buscar-centros">
+  {language === 'es' ? 'Buscar centros de salud' : 'Cercar centres de salut'}
+</NavDropdown.Item>
+
               <NavDropdown.Item onClick={handleLogout}>
                 {language === 'es' ? 'Cerrar sesión' : 'Tancar sessió'}
               </NavDropdown.Item>
