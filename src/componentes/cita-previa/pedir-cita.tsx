@@ -42,9 +42,23 @@ const PedirCita: React.FC = () => {
       return;
     }
 
+    // Validar que la fecha no sea anterior a la actual
+    const selectedDate = new Date(fecha);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Establecer la hora para comparar solo la fecha
+    if (selectedDate < today) {
+      setError(
+        language === 'es'
+          ? 'La fecha seleccionada no puede ser anterior a hoy.'
+          : 'La data seleccionada no pot ser anterior a avui.'
+      );
+      return;
+    }
+
     setError('');
 
     try {
+      // Control para que se pida cita si estás logueado
       const userId = auth.currentUser?.uid;
       if (!userId) {
         setError(

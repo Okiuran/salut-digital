@@ -10,11 +10,6 @@ const BuscarCentros: React.FC = () => {
       <h1>
         {language === 'es' ? 'Buscar Centros de Salud' : 'Cercar Centres de Salut'}
       </h1>
-      <p>
-        {language === 'es'
-          ? 'Introduce un código postal para buscar centros de salud cercanos.'
-          : 'Introdueix un codi postal per cercar centres de salut propers.'}
-      </p>
       <MapComponent />
     </div>
   );
