@@ -10,6 +10,7 @@ import ResetPassword from './componentes/reset-password/reset-password.tsx';
 import PerfilUsuario from './componentes/perfil/perfil.tsx';
 import PedirCita from './componentes/cita-previa/pedir-cita.tsx';
 import BuscarCentros from './componentes/buscar-centro/buscar-centro.tsx';
+import ModificarCita from './componentes/cita-previa/modificar-cita.tsx';
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
           <Route path="/profile" element={<PerfilUsuario />} />
           <Route path="/pedir-cita" element={<PedirCita /> } />
           <Route path="/buscar-centros" element={<BuscarCentros />} />
+          <Route path="/modificar-cita" element={<ModificarCita />} />
 
         </Routes>
       </Router>

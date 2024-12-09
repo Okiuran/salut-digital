@@ -60,7 +60,10 @@ const HomePage: React.FC = () => {
         const q = query(collection(db, 'appointments'), where('userId', '==', auth.currentUser?.uid));
         const querySnapshot = await getDocs(q);
 
-        const appointmentsList = querySnapshot.docs.map((doc) => doc.data() as Appointment);
+        const appointmentsList = querySnapshot.docs.map((doc) => ({
+          id: doc.id, // Obtener id del documento a actualizar
+          ...doc.data() as Appointment,
+        }));
         setAppointments(appointmentsList);
         setShowAppointmentsModal(true);
       } catch (error) {
@@ -216,6 +219,13 @@ const HomePage: React.FC = () => {
           >
             {language === 'es' ? 'Cancelar cita' : 'Cancel·lar cita'}
           </Button>
+          <Button
+  variant="primary"
+  onClick={() => navigate('/modificar-cita', { state: { appointment: appointment } })}
+>
+  {language === 'es' ? 'Modificar cita' : 'Modificar cita'}
+</Button>
+
         </Card.Body>
       </Card>
     ))
