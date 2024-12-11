@@ -58,7 +58,7 @@ const PedirCita: React.FC = () => {
     setError('');
 
     try {
-      // Control para que se pida cita si estás logueado
+      // Pide cita si estás logueado
       const userId = auth.currentUser?.uid;
       if (!userId) {
         setError(
