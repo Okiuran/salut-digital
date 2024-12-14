@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/salut-digital/static/css/main.ca67ef22.css",
+    "main.js": "/salut-digital/static/js/main.1a15d570.js",
+    "static/js/488.3d2fc4f2.chunk.js": "/salut-digital/static/js/488.3d2fc4f2.chunk.js",
+    "index.html": "/salut-digital/index.html",
+    "main.ca67ef22.css.map": "/salut-digital/static/css/main.ca67ef22.css.map",
+    "main.1a15d570.js.map": "/salut-digital/static/js/main.1a15d570.js.map",
+    "488.3d2fc4f2.chunk.js.map": "/salut-digital/static/js/488.3d2fc4f2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ca67ef22.css",
+    "static/js/main.1a15d570.js"
+  ]
+}
