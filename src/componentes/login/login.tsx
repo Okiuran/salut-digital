@@ -33,12 +33,13 @@ const LoginPage: React.FC = () => {
             if (docSnap.exists()) {
                 const userData = docSnap.data();
                 userName = userData.nombre || ''; // Obtiene el campo "nombre" si existe
+                // Esto lo que hace es que si te acabas de registrar o no tienes perfil sale el email pero si ya tienes perfil con nombre añadido saldrá este
             }
         } catch (fetchError) {
             console.error('Error fetching user profile:', fetchError);
         }
 
-        // Mensaje de bienvenida
+        // Mensaje mostrando email o nombre
         const welcomeMessage = userName
             ? (language === 'es'
                 ? `Bienvenido/a, ${userName}`
@@ -60,8 +61,8 @@ const LoginPage: React.FC = () => {
         setModalTitle(language === 'es' ? 'Error con el inicio de sesión' : 'Error amb l\'inici de sessió');
         setModalMessage(
             language === 'es'
-                ? 'Error al iniciar sesión. Por favor, verifica tus credenciales.'
-                : 'Error en iniciar sessió. Verifica les teves credencials.'
+                ? 'Error al iniciar sesión. Por favor, verifica tus credenciales y que la cuenta esté ya creada.'
+                : 'Error en iniciar sessió. Si us plau, verifica les teves credencials i que el compte estigui ja fet.'
         );
         setShowModal(true);
         console.error(error);
@@ -70,7 +71,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div>
-      <h2>{language === 'es' ? 'Iniciar Sesión' : 'Iniciar Sessió'}</h2>
+      <h2>{language === 'es' ? 'Iniciar sesión' : 'Iniciar sessió'}</h2>
       <Form onSubmit={handleLogin}>
         <Form.Group controlId="formEmail">
           <Form.Label>{language === 'es' ? 'Correo electrónico' : 'Correu electrònic'}</Form.Label>
@@ -93,7 +94,7 @@ const LoginPage: React.FC = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          {language === 'es' ? 'Iniciar Sesión' : 'Iniciar Sessió'}
+          {language === 'es' ? 'Iniciar sesión' : 'Iniciar sessió'}
         </Button>
       </Form>
 
@@ -111,7 +112,7 @@ const LoginPage: React.FC = () => {
       </Modal>
 
       <Button variant="secondary" onClick={() => navigate('/')}>
-        {language === 'es' ? 'Volver al inicio' : 'Torna a l\'inici'}
+        {language === 'es' ? 'Volver al inicio' : 'Tornar a l\'inici'}
       </Button>
 
       <div className="mt-3">

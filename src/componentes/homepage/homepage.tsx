@@ -23,7 +23,7 @@ const HomePage: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [showAppointmentsModal, setShowAppointmentsModal] = useState(false);
 
-  // Manejo de autenticación
+  // Autenticación
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
@@ -61,7 +61,7 @@ const HomePage: React.FC = () => {
         const querySnapshot = await getDocs(q);
 
         const appointmentsList = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // Obtener id del documento a actualizar
+          id: doc.id, // Obtener id del documento (equivalente a la tabla de una base de datos) a actualizar
           ...doc.data() as Appointment,
         }));
         setAppointments(appointmentsList);

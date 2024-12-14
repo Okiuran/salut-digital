@@ -124,7 +124,7 @@ const RegisterPage: React.FC = () => {
       </Modal>
 
       <Button variant="secondary" onClick={() => navigate('/')}>
-        {language === 'es' ? 'Volver al inicio' : "Torna a l'inici"}
+        {language === 'es' ? 'Volver al inicio' : "Tornar a l'inici"}
       </Button>
     </div>
   );

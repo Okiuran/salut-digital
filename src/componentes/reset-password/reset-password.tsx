@@ -24,8 +24,8 @@ const ResetPassword: React.FC = () => {
       setModalTitle(language === 'es' ? 'Correo enviado' : 'Correu enviat');
       setModalMessage(
         language === 'es'
-          ? 'Hemos enviado un enlace de restablecimiento de contraseña a tu correo.'
-          : "Hem enviat un enllaç de restabliment de contrasenya al teu correu."
+          ? 'Hemos enviado un enlace a tu correo para establecer la contraseña.'
+          : "Hem enviat un enllaç al teu correu per restablir la contrasenya."
       );
       setShowModal(true);
     } catch (error) {
@@ -43,7 +43,7 @@ const ResetPassword: React.FC = () => {
 
   return (
     <div>
-      <h2>{language === 'es' ? 'Restablecer Contraseña' : 'Restablir Contrasenya'}</h2>
+      <h2>{language === 'es' ? 'Restablecer contraseña' : 'Restablir contrasenya'}</h2>
       <Form onSubmit={handlePasswordReset}>
         <Form.Group controlId="formEmail">
           <Form.Label>{language === 'es' ? 'Correo electrónico' : 'Correu electrònic'}</Form.Label>
@@ -60,7 +60,7 @@ const ResetPassword: React.FC = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          {language === 'es' ? 'Enviar enlace' : 'Envia enllaç'}
+          {language === 'es' ? 'Enviar enlace' : 'Enviar enllaç'}
         </Button>
       </Form>
 
@@ -78,7 +78,7 @@ const ResetPassword: React.FC = () => {
       </Modal>
 
       <Button variant="secondary" onClick={() => navigate('/')}>
-        {language === 'es' ? 'Volver al inicio' : "Torna a l'inici"}
+        {language === 'es' ? 'Volver al inicio' : "Tornar a l'inici"}
       </Button>
     </div>
   );

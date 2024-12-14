@@ -23,7 +23,6 @@ const ModificarCita: React.FC = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // Lista de profesionales (puedes hacerla dinámica si es necesario)
     const profesionales = [
       language === 'es' ? 'Médico de cabecera' : 'Metge de capçalera',
       language === 'es' ? 'Enfermero/a' : 'Infermer/a',
@@ -33,7 +32,7 @@ const ModificarCita: React.FC = () => {
       language === 'es' ? 'Otros' : 'Altres',
     ];
 
-    // Al cargar el componente, tomamos los datos de la cita
+    // Al cargar el componente, cogemos los datos de la cita
     useEffect(() => {
       const stateAppointment = location.state?.appointment;
       if (stateAppointment) {
@@ -100,7 +99,7 @@ const ModificarCita: React.FC = () => {
 
     return (
       <div className="container mt-5">
-        <h2>{language === 'es' ? 'Modificar Cita' : 'Modificar cita'}</h2>
+        <h2>{language === 'es' ? 'Modificar cita' : 'Modificar cita'}</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         {success && (
           <Alert variant="success">
@@ -170,7 +169,7 @@ const ModificarCita: React.FC = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          {language === 'es' ? 'Modificar Cita' : 'Modificar cita'}
+          {language === 'es' ? 'Modificar cita' : 'Modificar cita'}
         </Button>
         <Button
           variant="secondary"
