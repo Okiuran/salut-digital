@@ -165,7 +165,7 @@ const PerfilUsuario: React.FC = () => {
               value={profile.tarjetaSanitaria}
               onChange={handleChange}
               placeholder={
-                language === 'es' ? 'Introduce tu número' : 'Introdueix el teu número'
+                language === 'es' ? 'Introduce el número de tarjeta' : 'Introdueix el número de targeta'
               }
               isInvalid={!!errors.tarjetaSanitaria}
               required

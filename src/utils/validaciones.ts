@@ -15,6 +15,7 @@ export const validateNombre = (nombre: string, language: string): string => {
   };
 
   export const validateTarjetaSanitaria = (
+    // La tarjeta sanitaria tiene este formato: 4 letras y una serie de números con espacios (XXXX X XXXXXX XX X)
     tarjetaSanitaria: string,
     language: string
   ): string => {
