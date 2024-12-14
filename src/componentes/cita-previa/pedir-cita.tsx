@@ -95,7 +95,7 @@ const PedirCita: React.FC = () => {
 
   return (
     <div className="container mt-5">
-      <h2>{language === 'es' ? 'Pedir Cita' : 'Demanar cita'}</h2>
+      <h2>{language === 'es' ? 'Pedir cita' : 'Demanar cita'}</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       {success && (
         <Alert variant="success">
@@ -177,7 +177,7 @@ const PedirCita: React.FC = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          {language === 'es' ? 'Solicitar Cita' : 'Sol·licitar cita'}
+          {language === 'es' ? 'Solicitar cita' : 'Sol·licitar cita'}
         </Button>
         <Button
           variant="secondary"
