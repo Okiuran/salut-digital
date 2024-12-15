@@ -55,7 +55,7 @@ const MyNavbar: React.FC = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand>
-        {language === 'es' ? 'SalutDigital' : 'SalutDigital'}
+        {'SalutDigital'}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
@@ -82,10 +82,19 @@ const MyNavbar: React.FC = () => {
                   : user.email // Si no hay nombre, muestra email
               }
               id="user-menu"
+              align="end" // Ajustado menú para que no se corte el texto
             >
               <NavDropdown.Item as={Link} to="/buscar-centros">
   {language === 'es' ? 'Buscar centros de salud' : 'Cercar centres de salut'}
 </NavDropdown.Item>
+
+<NavDropdown.Item
+                href="https://sem.gencat.cat/ca/061-salut-respon/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {'061 Salut Respon'}
+              </NavDropdown.Item>
 
               <NavDropdown.Item onClick={handleLogout}>
                 {language === 'es' ? 'Cerrar sesión' : 'Tancar sessió'}

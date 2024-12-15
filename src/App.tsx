@@ -12,6 +12,8 @@ import PedirCita from './componentes/cita-previa/pedir-cita.tsx';
 import BuscarCentros from './componentes/buscar-centro/buscar-centro.tsx';
 import ModificarCita from './componentes/cita-previa/modificar-cita.tsx';
 
+import Footer from './componentes/footer/footer.tsx';
+
 const App: React.FC = () => {
   return (
     <LanguageProvider>
@@ -29,6 +31,7 @@ const App: React.FC = () => {
           <Route path="/modificar-cita" element={<ModificarCita />} />
 
         </Routes>
+        <Footer />
       </Router>
     </LanguageProvider>
   );

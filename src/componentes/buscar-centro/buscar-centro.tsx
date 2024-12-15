@@ -8,7 +8,7 @@ const BuscarCentros: React.FC = () => {
   return (
     <div>
       <h1>
-        {language === 'es' ? 'Buscar Centros de Salud' : 'Cercar Centres de Salut'}
+        {language === 'es' ? 'Buscar centros de salud' : 'Cercar centres de salut'}
       </h1>
       <MapComponent />
     </div>

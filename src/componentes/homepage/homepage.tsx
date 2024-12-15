@@ -113,7 +113,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="text-center">
-      <h1>{language === 'es' ? 'Bienvenido a SalutDigital' : 'Benvingut a SalutDigital'}</h1>
+      <h1>SalutDigital</h1>
       <p>
         {language === 'es'
           ? 'Aquí puedes gestionar tus citas médicas de manera sencilla y segura.'
