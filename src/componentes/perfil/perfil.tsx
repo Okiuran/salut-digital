@@ -175,7 +175,7 @@ const PerfilUsuario: React.FC = () => {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="formDNI">
-            <Form.Label>{language === 'es' ? 'DNI' : 'DNI'}</Form.Label>
+            <Form.Label>{'DNI'}</Form.Label>
             <Form.Control
               type="text"
               name="dni"

@@ -159,7 +159,7 @@ const ModificarCita: React.FC = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="hora">
-          <Form.Label>{language === 'es' ? 'Hora' : 'Hora'}</Form.Label>
+          <Form.Label>{'Hora'}</Form.Label>
           <Form.Control
             type="time"
             value={appointment.hora}

@@ -64,7 +64,7 @@ const MyNavbar: React.FC = () => {
             {language === 'es' ? 'Inicio' : 'Inici'}
           </Nav.Link>
           <Nav.Link as={Link} to="/profile">
-            {language === 'es' ? 'Perfil' : 'Perfil'}
+            {'Perfil'}
           </Nav.Link>
           <Nav.Link as={Link} to="/servicios">
             {language === 'es' ? 'Servicios' : 'Serveis'}
@@ -88,13 +88,17 @@ const MyNavbar: React.FC = () => {
   {language === 'es' ? 'Buscar centros de salud' : 'Cercar centres de salut'}
 </NavDropdown.Item>
 
-<NavDropdown.Item
+              <NavDropdown.Item
                 href="https://sem.gencat.cat/ca/061-salut-respon/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {'061 Salut Respon'}
               </NavDropdown.Item>
+
+        <NavDropdown.Item onClick={() => navigate('/historial-medico')}>
+          {'Historial'}
+        </NavDropdown.Item>
 
               <NavDropdown.Item onClick={handleLogout}>
                 {language === 'es' ? 'Cerrar sesión' : 'Tancar sessió'}
