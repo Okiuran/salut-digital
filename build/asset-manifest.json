@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/salut-digital/static/css/main.34cf17a0.css",
+    "main.js": "/salut-digital/static/js/main.37edd7a5.js",
+    "static/js/239.02978b44.chunk.js": "/salut-digital/static/js/239.02978b44.chunk.js",
+    "static/js/213.d41ef832.chunk.js": "/salut-digital/static/js/213.d41ef832.chunk.js",
+    "static/js/488.19760199.chunk.js": "/salut-digital/static/js/488.19760199.chunk.js",
+    "static/media/logo.svg": "/salut-digital/static/media/logo.6e7425e04b7145e346cca9725b7e1561.svg",
+    "static/media/112.png": "/salut-digital/static/media/112.e7b8ed31cfa75e1bb170.png",
+    "index.html": "/salut-digital/index.html",
+    "main.34cf17a0.css.map": "/salut-digital/static/css/main.34cf17a0.css.map",
+    "main.37edd7a5.js.map": "/salut-digital/static/js/main.37edd7a5.js.map",
+    "239.02978b44.chunk.js.map": "/salut-digital/static/js/239.02978b44.chunk.js.map",
+    "213.d41ef832.chunk.js.map": "/salut-digital/static/js/213.d41ef832.chunk.js.map",
+    "488.19760199.chunk.js.map": "/salut-digital/static/js/488.19760199.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.34cf17a0.css",
+    "static/js/main.37edd7a5.js"
+  ]
+}
