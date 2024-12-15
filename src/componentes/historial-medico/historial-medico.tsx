@@ -37,7 +37,7 @@ const HistorialMedico: React.FC = () => {
             const medicationsSnapshot = await getDocs(medicationsQuery);
 
             const medications = medicationsSnapshot.docs.map((medDoc) => medDoc.data().medicacion).join(', '); // Unir medicaciones en un string
-            appointmentData.medicacion = medications || ''; // Si no hay medicación, dejarlo vacío
+            appointmentData.medicacion = medications || 'No precisa'; // Si no hay medicación, hacer constancia de ello (pendiente de mejorar)
 
             return appointmentData;
           }));
