@@ -101,15 +101,15 @@ const HistorialMedico: React.FC = () => {
     );
 
     if (appointment.medicacion) {
-        const medicaciones = appointment.medicacion.split(','); // Asumiendo que las medicaciones están separadas por coma
-        let yPosition = 100; // Posición inicial en el PDF para la medicación
+        const medicaciones = appointment.medicacion.split(',');
+        let yPosition = 100;
 
         doc.text(
           `${language === 'es' ? 'Medicación:' : 'Medicació:'}`,
           10,
           yPosition
         );
-        yPosition += 10; // Espacio después del título de medicación
+        yPosition += 10;
 
         medicaciones.forEach((med, index) => {
           doc.text(`· ${med.trim()}`, 10, yPosition + (index * 10)); // Mostrar cada medicamento en una línea
