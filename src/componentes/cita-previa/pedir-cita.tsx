@@ -20,7 +20,7 @@ const PedirCita: React.FC = () => {
   const profesionales = [
     language === 'es' ? 'Médico de cabecera' : 'Metge de capçalera',
     language === 'es' ? 'Enfermero/a' : 'Infermer/a',
-    language === 'es' ? 'Ginecología' : 'Ginecologia',
+    language === 'es' ? 'Matrona' : 'Matrona',
     language === 'es' ? 'Extracciones' : 'Extraccions',
     language === 'es' ? 'Vacuna gripe/covid' : 'Vacuna grip/covid',
     language === 'es' ? 'Otros' : 'Altres',

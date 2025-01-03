@@ -4,7 +4,9 @@ import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { db, auth } from '../../firebase-config.ts';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import jsPDF from 'jspdf';
-import canvg from 'canvg';
+import 'jspdf-autotable';
+import { Canvg } from 'canvg';
+import logo from '../../assets/logo.svg';
 
 interface Appointment {
   id: string;
@@ -28,19 +30,22 @@ const HistorialMedico: React.FC = () => {
           const appointmentsRef = collection(db, 'appointments');
           const q = query(appointmentsRef, where('userId', '==', userId));
           const querySnapshot = await getDocs(q);
-          const appointmentsData = await Promise.all(querySnapshot.docs.map(async (doc) => {
-            const appointmentData = { id: doc.id, ...doc.data() } as Appointment;
+          const appointmentsData = await Promise.all(
+            querySnapshot.docs.map(async (doc) => {
+              const appointmentData = { id: doc.id, ...doc.data() } as Appointment;
 
-            // Obtener medicación asociada a la cita
-            const medicationsRef = collection(db, 'medications');
-            const medicationsQuery = query(medicationsRef, where('appointmentId', '==', doc.id));
-            const medicationsSnapshot = await getDocs(medicationsQuery);
+              const medicationsRef = collection(db, 'medications');
+              const medicationsQuery = query(medicationsRef, where('appointmentId', '==', doc.id));
+              const medicationsSnapshot = await getDocs(medicationsQuery);
 
-            const medications = medicationsSnapshot.docs.map((medDoc) => medDoc.data().medicacion).join(', '); // Unir medicaciones en un string
-            appointmentData.medicacion = medications || 'No precisa'; // Si no hay medicación, hacer constancia de ello (pendiente de mejorar)
+              const medications = medicationsSnapshot.docs
+                .map((medDoc) => medDoc.data().medicacion)
+                .join(', '); // Unir medicaciones en un string
+              appointmentData.medicacion = medications || 'No precisa'; // Si no hay medicación, hacer constancia de ello (pendiente de mejorar)
 
-            return appointmentData;
-          }));
+              return appointmentData;
+            })
+          );
 
           setAppointments(appointmentsData);
         } catch (error) {
@@ -52,71 +57,78 @@ const HistorialMedico: React.FC = () => {
     fetchAppointments();
   }, []);
 
-  const downloadPDF = (appointment: Appointment) => {
+  const downloadPDF = async (appointment: Appointment) => {
     const doc = new jsPDF();
-
-    // Convertir SVG a PNG
-    const svgElement = document.getElementById('logo');
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    if (svgElement && ctx) {
-      canvg(canvas, svgElement.outerHTML); // Renderizar SVG
-      const imgData = canvas.toDataURL('image/png');
+    // Obtener información del usuario actual desde Firebase
+    const userId = auth.currentUser?.uid;
+    let userName = '';
+    let userBirthDate = '';
 
-      doc.addImage(imgData, 'PNG', 10, 10, 30, 30);
+    if (userId) {
+      const userRef = collection(db, 'users');
+      const userQuery = query(userRef, where('id', '==', userId));
+      const userSnapshot = await getDocs(userQuery);
+
+      if (!userSnapshot.empty) {
+        const userData = userSnapshot.docs[0].data();
+        userName = userData.name || 'Usuario desconocido';
+        userBirthDate = userData.birthDate || 'No especificada';
+      }
     }
 
-    doc.setFontSize(16);
-    doc.text(
-      language === 'es' ? 'Plan de Medicación' : 'Pla de Medicació',
-      80,
-      20
-    );
+    if (ctx) {
+      const response = await fetch(logo);
+      const svgContent = await response.text();
 
+      const v = await Canvg.from(ctx, svgContent);
+      await v.render();
+
+      const imgData = canvas.toDataURL('image/png');
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const logoWidth = 40;
+      const logoHeight = 20;
+
+      doc.addImage(imgData, 'PNG', pageWidth - logoWidth - 10, 10, logoWidth, logoHeight);
+    }
+
+    doc.setFontSize(14);
+    doc.text(language === 'es' ? 'Información' : 'Informació', 10, 20);
     doc.setFontSize(12);
-    doc.text(
-      `${language === 'es' ? 'Fecha:' : 'Data:'} ${appointment.fecha}`,
-      10,
-      50
-    );
-    doc.text(
-      `${'Hora'} ${appointment.hora}`,
-      10,
-      60
-    );
-    doc.text(
-      `${
-        language === 'es' ? 'Profesional:' : 'Professional:'
-      } ${appointment.profesional}`,
-      10,
-      70
-    );
-    doc.text(
-      `${
-        language === 'es' ? 'Motivo:' : 'Motiu:'
-      } ${appointment.motivo}`,
-      10,
-      80
-    );
+    doc.text(`${language === 'es' ? 'Nombre:' : 'Nom:'} ${userName}`, 10, 30);
+    doc.text(`${language === 'es' ? 'Fecha de Nacimiento:' : 'Data de Naixement:'} ${userBirthDate}`, 10, 40);
 
-    if (appointment.medicacion) {
-        const medicaciones = appointment.medicacion.split(',');
-        let yPosition = 100;
+    doc.setFontSize(16);
+    doc.text(language === 'es' ? 'Plan de Medicación' : 'Pla de Medicació', 10, 60);
 
-        doc.text(
-          `${language === 'es' ? 'Medicación:' : 'Medicació:'}`,
-          10,
-          yPosition
-        );
-        yPosition += 10;
+    // Generar tabla con los datos de la cita
+    const tableData = [
+      [
+        appointment.fecha,
+        appointment.hora,
+        appointment.profesional,
+        appointment.medicacion || (language === 'es' ? 'No precisa' : 'No precisa'),
+      ],
+    ];
 
-        medicaciones.forEach((med, index) => {
-          doc.text(`· ${med.trim()}`, 10, yPosition + (index * 10)); // Mostrar cada medicamento en una línea
-        });
-      }
+    const headers = [
+      language === 'es' ? 'Fecha' : 'Data',
+      language === 'es' ? 'Hora' : 'Hora',
+      language === 'es' ? 'Profesional' : 'Professional',
+      language === 'es' ? 'Medicación' : 'Medicació',
+    ];
 
-      doc.save(`${language === 'es' ? 'Plan_Medicacion' : 'Pla_Medicació'}.pdf`);
+    doc.autoTable({
+      head: [headers],
+      body: tableData,
+      startY: 70,
+      styles: { fontSize: 10, cellPadding: 3 },
+      headStyles: { fillColor: [22, 160, 133], textColor: [255, 255, 255] },
+    });
+
+    doc.save(`${language === 'es' ? 'Plan_Medicacion' : 'Pla_Medicació'}.pdf`);
   };
 
   return (
