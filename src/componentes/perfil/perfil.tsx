@@ -6,9 +6,10 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { validateNombre, validateApellidos, validateTarjetaSanitaria, validateDNI } from '../../utils/validaciones.ts';
+import './perfil.css';
 
 const PerfilUsuario: React.FC = () => {
-  const { language } = useLanguage();
+  const { language, translate } = useLanguage();
   const navigate = useNavigate();
 
   const [user, setUser] = useState<{ uid: string; email: string } | null>(null);
@@ -78,11 +79,7 @@ const PerfilUsuario: React.FC = () => {
     if (!user) return;
 
     if (!validate()) {
-      setModalMessage(
-        language === 'es'
-          ? 'Corrige los errores en el formulario.'
-          : 'Corregeix els errors en el formulari.'
-      );
+      setModalMessage(translate('profile.formError'));
       setShowModal(true);
       return;
     }
@@ -90,63 +87,55 @@ const PerfilUsuario: React.FC = () => {
     try {
       const docRef = doc(db, 'users', user.uid);
       await setDoc(docRef, profile, { merge: true });
-      setModalMessage(
-        language === 'es'
-          ? 'Perfil actualizado con éxito.'
-          : 'Perfil actualitzat amb èxit.'
-      );
+      setModalMessage(translate('profile.successUpdateProfile'));
       setShowModal(true);
       setEditing(false);
     } catch (error) {
       console.error('Error updating profile:', error);
-      setModalMessage(
-        language === 'es'
-          ? 'Error al actualizar el perfil.'
-          : 'Error en actualitzar el perfil.'
-      );
+      setModalMessage(translate('profile.errorUpdateProfile'));
       setShowModal(true);
     }
   };
 
   if (loading) {
-    return <p>{language === 'es' ? 'Cargando...' : 'Carregant...'}</p>;
+    return <p>{translate('profile.loading')}</p>;
   }
 
   return (
-    <div>
-      <h2>{language === 'es' ? 'Perfil del usuario' : "Perfil de l'usuari"}</h2>
+    <div className="profile-container">
+      <div className="profile-header">
+        <h2>{translate('profile.title')}</h2>
+      </div>
       {editing ? (
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formFirstName">
-            <Form.Label>{language === 'es' ? 'Nombre' : 'Nom'}</Form.Label>
+            <Form.Label>{translate('profile.name')}</Form.Label>
             <Form.Control
               type="text"
               name="nombre"
               value={profile.nombre}
               onChange={handleChange}
-              placeholder={language === 'es' ? 'Introduce tu nombre' : 'Introdueix el teu nom'}
+              placeholder={translate('profile.namePlaceholder')}
               isInvalid={!!errors.nombre}
               required
             />
             <Form.Control.Feedback type="invalid">{errors.nombre}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="formLastName">
-            <Form.Label>{language === 'es' ? 'Apellidos' : 'Cognoms'}</Form.Label>
+            <Form.Label>{translate('profile.lastName')}</Form.Label>
             <Form.Control
               type="text"
               name="apellidos"
               value={profile.apellidos}
               onChange={handleChange}
-              placeholder={language === 'es' ? 'Introduce tus apellidos' : 'Introdueix els teus cognoms'}
+              placeholder={translate('profile.lastNamePlaceholder')}
               isInvalid={!!errors.apellidos}
               required
             />
             <Form.Control.Feedback type="invalid">{errors.apellidos}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="formBirthDate">
-            <Form.Label>
-              {language === 'es' ? 'Fecha de nacimiento' : 'Data de naixement'}
-            </Form.Label>
+            <Form.Label>{translate('profile.birthDate')}</Form.Label>
             <Form.Control
               type="date"
               name="fechaNacimiento"
@@ -156,81 +145,72 @@ const PerfilUsuario: React.FC = () => {
             />
           </Form.Group>
           <Form.Group controlId="formHealthCardNumber">
-            <Form.Label>
-              {language === 'es' ? 'Número de tarjeta sanitaria' : 'Número de targeta sanitària'}
-            </Form.Label>
+            <Form.Label>{translate('profile.healthCard')}</Form.Label>
             <Form.Control
               type="text"
               name="tarjetaSanitaria"
               value={profile.tarjetaSanitaria}
               onChange={handleChange}
-              placeholder={
-                language === 'es' ? 'Introduce el número de tarjeta' : 'Introdueix el número de targeta'
-              }
+              placeholder={translate('profile.healthCardPlaceholder')}
               isInvalid={!!errors.tarjetaSanitaria}
               required
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.tarjetaSanitaria}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{errors.tarjetaSanitaria}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="formDNI">
-            <Form.Label>{'DNI'}</Form.Label>
+            <Form.Label>{translate('profile.dni')}</Form.Label>
             <Form.Control
               type="text"
               name="dni"
               value={profile.dni}
               onChange={handleChange}
-              placeholder={language === 'es' ? 'Introduce tu DNI' : 'Introdueix el teu DNI'}
+              placeholder={translate('profile.dniPlaceholder')}
               isInvalid={!!errors.dni}
               required
             />
             <Form.Control.Feedback type="invalid">{errors.dni}</Form.Control.Feedback>
           </Form.Group>
           <Button variant="primary" type="submit">
-            {language === 'es' ? 'Actualizar perfil' : 'Actualitzar perfil'}
+            {translate('profile.updateButton')}
           </Button>
           <Button variant="secondary" onClick={() => setEditing(false)}>
-            {language === 'es' ? 'Cancelar' : 'Cancel·lar'}
+            {translate('profile.cancelButton')}
           </Button>
         </Form>
       ) : (
-        <div>
+        <div className="profile-details">
           <p>
-            <strong>{language === 'es' ? 'Nombre:' : 'Nom:'}</strong> {profile.nombre}
+            <strong>{translate('profile.name')}:</strong> {profile.nombre}
           </p>
           <p>
-            <strong>{language === 'es' ? 'Apellidos:' : 'Cognoms:'}</strong>{' '}
-            {profile.apellidos}
+            <strong>{translate('profile.lastName')}:</strong> {profile.apellidos}
           </p>
           <p>
-            <strong>{language === 'es' ? 'Fecha de nacimiento:' : 'Data de naixement:'}</strong>{' '}
-            {profile.fechaNacimiento}
+            <strong>{translate('profile.birthDate')}:</strong> {profile.fechaNacimiento}
           </p>
           <p>
-            <strong>{language === 'es' ? 'Tarjeta sanitaria:' : 'Targeta sanitària:'}</strong>{' '}
-            {profile.tarjetaSanitaria}
+            <strong>{translate('profile.healthCard')}:</strong> {profile.tarjetaSanitaria}
           </p>
           <p>
-            <strong>{language === 'es' ? 'DNI:' : 'DNI:'}</strong> {profile.dni}
+            <strong>{translate('profile.dni')}:</strong> {profile.dni}
           </p>
           <Button variant="primary" onClick={() => setEditing(true)}>
-            {language === 'es' ? 'Editar perfil' : 'Editar perfil'}
+            {translate('profile.editButton')}
           </Button>
           <Button variant="secondary" onClick={() => navigate('/')}>
-            {language === 'es' ? 'Volver al inicio' : "Torna a l'inici"}
+            {translate('profile.backButton')}
           </Button>
         </div>
       )}
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>{language === 'es' ? 'Mensaje' : 'Missatge'}</Modal.Title>
+          <Modal.Title>{translate('profile.modalTitle')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{modalMessage}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
-            {language === 'es' ? 'Cerrar' : 'Tancar'}
+            {translate('profile.modalCloseButton')}
           </Button>
         </Modal.Footer>
       </Modal>

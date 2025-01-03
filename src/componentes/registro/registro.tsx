@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import { validatePassword } from '../../utils/validaciones.ts';
 
 const RegisterPage: React.FC = () => {
-  const { language } = useLanguage();
+  const { language, translate } = useLanguage();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ const RegisterPage: React.FC = () => {
 
     // Verificar requisitos de la contraseña
     if (!validatePassword(password)) {
-      setModalTitle(language === 'es' ? 'Error' : 'Error');
+      setModalTitle(translate('register.modalTitleError'));
       setModalMessage(
         language === 'es'
           ? 'La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial.'
@@ -36,8 +36,8 @@ const RegisterPage: React.FC = () => {
 
     // Verificar que las contraseñas coincidan
     if (password !== confirmPassword) {
-      setModalTitle(language === 'es' ? 'Error' : 'Error');
-      setModalMessage(language === 'es' ? 'Las contraseñas no coinciden' : 'Les contrasenyes no coincideixen');
+      setModalTitle(translate('register.modalTitleError'));
+      setModalMessage(translate('register.passwordsMismatch'));
       setShowModal(true);
       return;
     }
@@ -48,12 +48,8 @@ const RegisterPage: React.FC = () => {
 
       // Enviar correo de verificación
       await sendEmailVerification(user);
-      setModalTitle(language === 'es' ? 'Registro con éxito.' : 'Registre amb èxit');
-      setModalMessage(
-        language === 'es'
-          ? 'Se ha enviado un correo de verificación.'
-          : "S'ha enviat un correu de verificació."
-      );
+      setModalTitle(translate('register.modalTitleSuccess'));
+      setModalMessage(translate('register.modalMessageSuccess'));
       setShowModal(true);
 
       // Redirigir a inicio después del registro
@@ -61,8 +57,8 @@ const RegisterPage: React.FC = () => {
         navigate('/');
       }, 3000);
     } catch (error) {
-      setModalTitle(language === 'es' ? 'Error en el registro' : 'Error amb el registre');
-      setModalMessage(language === 'es' ? 'Se ha notificado un error en el registro' : "S'ha notificat un error al registre");
+      setModalTitle(translate('register.modalTitleError'));
+      setModalMessage(translate('register.modalMessageError'));
       setShowModal(true);
       console.error(error);
     }
@@ -70,44 +66,44 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div>
-      <h2>{language === 'es' ? 'Registro' : 'Registre'}</h2>
+      <h2>{translate('register.title')}</h2>
       <Form onSubmit={handleRegister}>
         <Form.Group controlId="formEmail">
-          <Form.Label>{language === 'es' ? 'Correo electrónico' : 'Correu electrònic'}</Form.Label>
+          <Form.Label>{translate('register.emailLabel')}</Form.Label>
           <Form.Control
             type="email"
-            placeholder={language === 'es' ? 'Introduce tu correo electrónico' : 'Introdueix el teu correu electrònic'}
+            placeholder={translate('register.emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </Form.Group>
         <Form.Group controlId="formPassword">
-          <Form.Label>{language === 'es' ? 'Contraseña' : 'Contrasenya'}</Form.Label>
+          <Form.Label>{translate('register.passwordLabel')}</Form.Label>
           <Form.Control
             type="password"
-            placeholder={language === 'es' ? 'Introduce tu contraseña' : 'Introdueix la teva contrasenya'}
+            placeholder={translate('register.passwordPlaceholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </Form.Group>
         <Form.Group controlId="formConfirmPassword">
-          <Form.Label>{language === 'es' ? 'Confirma tu contraseña' : 'Confirma la teva contrasenya'}</Form.Label>
+          <Form.Label>{translate('register.confirmPasswordLabel')}</Form.Label>
           <Form.Control
             type="password"
-            placeholder={language === 'es' ? 'Confirma tu contraseña' : 'Confirma la teva contrasenya'}
+            placeholder={translate('register.confirmPasswordPlaceholder')}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             isInvalid={password !== '' && confirmPassword !== '' && password !== confirmPassword}
           />
           <Form.Control.Feedback type="invalid">
-            {language === 'es' ? 'Las contraseñas no coinciden' : 'Les contrasenyes no coincideixen'}
+            {translate('register.passwordsMismatch')}
           </Form.Control.Feedback>
         </Form.Group>
         <Button variant="primary" type="submit">
-          {language === 'es' ? 'Registrarse' : 'Registrar-se'}
+          {translate('register.registerButton')}
         </Button>
       </Form>
 
@@ -118,13 +114,13 @@ const RegisterPage: React.FC = () => {
         <Modal.Body>{modalMessage}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
-            {language === 'es' ? 'Cerrar' : 'Tancar'}
+            {translate('register.closeModalButton')}
           </Button>
         </Modal.Footer>
       </Modal>
 
       <Button variant="secondary" onClick={() => navigate('/')}>
-        {language === 'es' ? 'Volver al inicio' : "Tornar a l'inici"}
+        {translate('register.goBackButton')}
       </Button>
     </div>
   );

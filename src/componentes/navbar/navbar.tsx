@@ -5,6 +5,7 @@ import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { auth, db } from '../../firebase-config.ts';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import './navbar.css';
 
 const MyNavbar: React.FC = () => {
   const { language, setLanguage } = useLanguage();
@@ -53,7 +54,7 @@ const MyNavbar: React.FC = () => {
   };
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar expand="lg">
       <Navbar.Brand>
         {'SalutDigital'}
       </Navbar.Brand>

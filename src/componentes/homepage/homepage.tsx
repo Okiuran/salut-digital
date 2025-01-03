@@ -6,6 +6,9 @@ import { auth, db } from '../../firebase-config.ts';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, deleteDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
+import imagen1 from '../../assets/pedir-cita.png';
+import imagen2 from '../../assets/consultar-cita.png';
+
 interface Appointment {
   profesional: string;
   presencial: boolean;
@@ -114,10 +117,16 @@ const HomePage: React.FC = () => {
   return (
     <div className="text-center">
       <h1>SalutDigital</h1>
+      <br />
       <p>
         {language === 'es'
-          ? 'Aquí puedes gestionar tus citas médicas de manera sencilla y segura.'
-          : 'Aquí pots gestionar les teves cites mèdiques de manera senzilla i segura.'}
+          ? 'Gestiona tus citas médicas de manera sencilla y segura.'
+          : 'Gestiona les teves cites mèdiques de manera senzilla i segura.'}
+      </p>
+      <p>
+      {language === 'es'
+          ? 'Puedes acceder desde el mismo navegador o la versión web de móvil.'
+          : 'Pots accedir des del mateix navegador o la versió web de mòbil.'}
       </p>
       <div>
         {!user ? (
@@ -145,7 +154,7 @@ const HomePage: React.FC = () => {
   >
     <Card.Img
       variant="top"
-      src="https://via.placeholder.com/150"
+      src={imagen1}
       alt={language === 'es' ? 'Pedir cita' : 'Pedir cita'}
     />
     <Card.Body className="text-center">
@@ -166,7 +175,7 @@ const HomePage: React.FC = () => {
   >
     <Card.Img
       variant="top"
-      src="https://via.placeholder.com/150"
+      src={imagen2}
       alt={language === 'es' ? 'Consultar otras citas' : 'Consultar altres cites'}
     />
     <Card.Body className="text-center">
