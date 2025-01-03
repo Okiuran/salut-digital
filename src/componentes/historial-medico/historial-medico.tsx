@@ -94,7 +94,7 @@ const HistorialMedico: React.FC = () => {
       doc.addImage(imgData, 'PNG', pageWidth - logoWidth - 10, 10, logoWidth, logoHeight);
     }
 
-    doc.setFontSize(14);
+    doc.setFontSize(16);
     doc.text(language === 'es' ? 'Información' : 'Informació', 10, 20);
     doc.setFontSize(12);
     doc.text(`${language === 'es' ? 'Nombre:' : 'Nom:'} ${userName}`, 10, 30);

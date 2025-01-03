@@ -1,0 +1,10 @@
+.carousel-caption .caption-container {
+    border: 2px solid white;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    display: inline-block;
+    max-width: 90%;
+    margin: 0 auto;
+  }

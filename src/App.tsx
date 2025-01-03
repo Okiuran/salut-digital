@@ -11,6 +11,7 @@ import PerfilUsuario from './componentes/perfil/perfil.tsx';
 import PedirCita from './componentes/cita-previa/pedir-cita.tsx';
 import BuscarCentros from './componentes/buscar-centro/buscar-centro.tsx';
 import ModificarCita from './componentes/cita-previa/modificar-cita.tsx';
+import SaludMentalYOtros from './componentes/salud-mental/salud-mental.tsx';
 
 import HistorialMedico from './componentes/historial-medico/historial-medico.tsx';
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           <Route path="/buscar-centros" element={<BuscarCentros />} />
           <Route path="/modificar-cita" element={<ModificarCita />} />
           <Route path="/historial-medico" element={<HistorialMedico />} />
+          <Route path="/salud-mental" element={<SaludMentalYOtros />} />
 
         </Routes>
         <Footer />

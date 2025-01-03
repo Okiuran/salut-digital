@@ -12,6 +12,7 @@ const PedirCita: React.FC = () => {
   const [profesional, setProfesional] = useState('');
   const [presencial, setPresencial] = useState('');
   const [motivo, setMotivo] = useState('');
+  const [subMotivo, setSubMotivo] = useState('');
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [error, setError] = useState('');
@@ -20,9 +21,14 @@ const PedirCita: React.FC = () => {
   const profesionales = [
     language === 'es' ? 'Médico de cabecera' : 'Metge de capçalera',
     language === 'es' ? 'Enfermero/a' : 'Infermer/a',
-    language === 'es' ? 'Matrona' : 'Matrona',
+    'Matrona',
     language === 'es' ? 'Extracciones' : 'Extraccions',
     language === 'es' ? 'Vacuna gripe/covid' : 'Vacuna grip/covid',
+    'Dentista',
+    'Higienista dental',
+    language === 'es' ? 'Nutrición' : 'Nutrició',
+    language === 'es' ? 'Farmacia' : 'Farmàcia',
+    language === 'es' ? 'Trabajadora social' : 'Treballadora social',
     language === 'es' ? 'Otros' : 'Altres',
   ];
 
@@ -31,9 +37,21 @@ const PedirCita: React.FC = () => {
     language === 'es' ? 'No presencial' : 'No presencial',
   ];
 
+  const motivosConsulta = {
+    general: language === 'es' ? 'Consulta general' : 'Consulta general',
+    receta: {
+      label: language === 'es' ? 'Receta médica' : 'Recepta mèdica',
+      subMotivos: [
+        language === 'es' ? 'Crónico' : 'Crònic',
+        language === 'es' ? 'A demanda' : 'A demanda',
+        language === 'es' ? 'Otros' : 'Altres',
+      ],
+    },
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profesional || !presencial || !motivo || !fecha || !hora) {
+    if (!profesional || !presencial || (!motivo && !subMotivo) || !fecha || !hora) {
       setError(
         language === 'es'
           ? 'Por favor, completa todos los campos.'
@@ -42,10 +60,9 @@ const PedirCita: React.FC = () => {
       return;
     }
 
-    // Validar que la fecha no sea anterior a la actual
     const selectedDate = new Date(fecha);
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Establecer la hora para comparar solo la fecha
+    today.setHours(0, 0, 0, 0);
     if (selectedDate < today) {
       setError(
         language === 'es'
@@ -58,7 +75,6 @@ const PedirCita: React.FC = () => {
     setError('');
 
     try {
-      // Pide cita si estás logueado
       const userId = auth.currentUser?.uid;
       if (!userId) {
         setError(
@@ -73,7 +89,7 @@ const PedirCita: React.FC = () => {
         userId,
         profesional,
         presencial: presencial === 'Presencial',
-        motivo,
+        motivo: subMotivo || motivo,
         fecha,
         hora,
         createdAt: new Date().toISOString(),
@@ -143,17 +159,25 @@ const PedirCita: React.FC = () => {
 
         <Form.Group className="mb-3" controlId="motivo">
           <Form.Label>{language === 'es' ? 'Motivo de consulta' : 'Motiu de consulta'}</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder={
-              language === 'es'
-                ? 'Escribe el motivo de tu consulta'
-                : 'Escriu el motiu de la teva consulta'
-            }
+          <Form.Select
             value={motivo}
-            onChange={(e) => setMotivo(e.target.value)}
-            required
-          />
+            onChange={(e) => {
+              setMotivo(e.target.value);
+              setSubMotivo('');
+            }}
+          >
+            <option value="">
+              {language === 'es' ? 'Selecciona un motivo de consulta' : 'Selecciona un motiu de consulta'}
+            </option>
+            <option value="general">{motivosConsulta.general}</option>
+            <optgroup label={motivosConsulta.receta.label}>
+              {motivosConsulta.receta.subMotivos.map((sub) => (
+                <option key={sub} value={sub}>
+                  {sub}
+                </option>
+              ))}
+            </optgroup>
+          </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="fecha">
