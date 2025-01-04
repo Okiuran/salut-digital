@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { db, auth } from '../../firebase-config.ts';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import jsPDF from 'jspdf';
+import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
+import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { Canvg } from 'canvg';
 import logo from '../../assets/logo.svg';
 
+// Define las interfaces para los datos
 interface Appointment {
   id: string;
   profesional: string;
@@ -15,7 +16,15 @@ interface Appointment {
   motivo: string;
   fecha: string;
   hora: string;
-  medicacion?: string;
+  medicacion?: string[];
+}
+
+interface UserData {
+  nombre: string;
+  apellidos: string;
+  fechaNacimiento: string;
+  tarjetaSanitaria: string;
+  dni: string;
 }
 
 const HistorialMedico: React.FC = () => {
@@ -31,17 +40,18 @@ const HistorialMedico: React.FC = () => {
           const q = query(appointmentsRef, where('userId', '==', userId));
           const querySnapshot = await getDocs(q);
           const appointmentsData = await Promise.all(
-            querySnapshot.docs.map(async (doc) => {
-              const appointmentData = { id: doc.id, ...doc.data() } as Appointment;
+            querySnapshot.docs.map(async (docSnapshot) => {
+              const appointmentData = { id: docSnapshot.id, ...docSnapshot.data() } as Appointment;
 
+              // Obtener medicación asociada a la cita
               const medicationsRef = collection(db, 'medications');
-              const medicationsQuery = query(medicationsRef, where('appointmentId', '==', doc.id));
+              const medicationsQuery = query(medicationsRef, where('appointmentId', '==', docSnapshot.id));
               const medicationsSnapshot = await getDocs(medicationsQuery);
 
               const medications = medicationsSnapshot.docs
                 .map((medDoc) => medDoc.data().medicacion)
-                .join(', '); // Unir medicaciones en un string
-              appointmentData.medicacion = medications || 'No precisa'; // Si no hay medicación, hacer constancia de ello (pendiente de mejorar)
+                .flat();
+              appointmentData.medicacion = medications.length > 0 ? medications : undefined;
 
               return appointmentData;
             })
@@ -58,7 +68,7 @@ const HistorialMedico: React.FC = () => {
   }, []);
 
   const downloadPDF = async (appointment: Appointment) => {
-    const doc = new jsPDF();
+    const pdfDoc = new jsPDF();
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
@@ -68,14 +78,17 @@ const HistorialMedico: React.FC = () => {
     let userBirthDate = '';
 
     if (userId) {
-      const userRef = collection(db, 'users');
-      const userQuery = query(userRef, where('id', '==', userId));
-      const userSnapshot = await getDocs(userQuery);
+      try {
+        const userDocRef = doc(db, 'users', userId); // Acceder directamente al documento del usuario
+        const userSnapshot = await getDoc(userDocRef);
 
-      if (!userSnapshot.empty) {
-        const userData = userSnapshot.docs[0].data();
-        userName = userData.name || 'Usuario desconocido';
-        userBirthDate = userData.birthDate || 'No especificada';
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.data() as UserData;
+          userName = userData.nombre;
+          userBirthDate = userData.fechaNacimiento;
+        }
+      } catch (error) {
+        console.error('Error al obtener los datos del usuario:', error);
       }
     }
 
@@ -87,29 +100,30 @@ const HistorialMedico: React.FC = () => {
       await v.render();
 
       const imgData = canvas.toDataURL('image/png');
-      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageWidth = pdfDoc.internal.pageSize.getWidth();
       const logoWidth = 40;
       const logoHeight = 20;
 
-      doc.addImage(imgData, 'PNG', pageWidth - logoWidth - 10, 10, logoWidth, logoHeight);
+      pdfDoc.addImage(imgData, 'PNG', pageWidth - logoWidth - 10, 10, logoWidth, logoHeight);
     }
 
-    doc.setFontSize(16);
-    doc.text(language === 'es' ? 'Información' : 'Informació', 10, 20);
-    doc.setFontSize(12);
-    doc.text(`${language === 'es' ? 'Nombre:' : 'Nom:'} ${userName}`, 10, 30);
-    doc.text(`${language === 'es' ? 'Fecha de Nacimiento:' : 'Data de Naixement:'} ${userBirthDate}`, 10, 40);
+    // Añadir información del usuario al PDF
+    pdfDoc.setFontSize(16);
+    pdfDoc.text(language === 'es' ? 'Información' : 'Informació', 10, 20);
+    pdfDoc.setFontSize(12);
+    pdfDoc.text(`${language === 'es' ? 'Nombre:' : 'Nom:'} ${userName}`, 10, 30);
+    pdfDoc.text(`${language === 'es' ? 'Fecha de nacimiento:' : 'Data de naixement:'} ${userBirthDate}`, 10, 40);
 
-    doc.setFontSize(16);
-    doc.text(language === 'es' ? 'Plan de Medicación' : 'Pla de Medicació', 10, 60);
+    pdfDoc.setFontSize(16);
+    pdfDoc.text(language === 'es' ? 'Plan de Medicación' : 'Pla de Medicació', 10, 60);
 
-    // Generar tabla con los datos de la cita
     const tableData = [
       [
         appointment.fecha,
         appointment.hora,
         appointment.profesional,
-        appointment.medicacion || (language === 'es' ? 'No precisa' : 'No precisa'),
+        appointment.motivo,
+        ...(appointment.medicacion ? appointment.medicacion.map((med) => med) : ['No precisa']),
       ],
     ];
 
@@ -117,18 +131,21 @@ const HistorialMedico: React.FC = () => {
       language === 'es' ? 'Fecha' : 'Data',
       language === 'es' ? 'Hora' : 'Hora',
       language === 'es' ? 'Profesional' : 'Professional',
+      language === 'es' ? 'Motivo' : 'Motiu',
       language === 'es' ? 'Medicación' : 'Medicació',
     ];
 
-    doc.autoTable({
+    // Generar tabla con los datos de la cita
+    pdfDoc.autoTable({
       head: [headers],
       body: tableData,
       startY: 70,
       styles: { fontSize: 10, cellPadding: 3 },
       headStyles: { fillColor: [22, 160, 133], textColor: [255, 255, 255] },
+      theme: 'striped',
     });
 
-    doc.save(`${language === 'es' ? 'Plan_Medicacion' : 'Pla_Medicació'}.pdf`);
+    pdfDoc.save(`${language === 'es' ? 'Plan_Medicacion' : 'Pla_Medicació'}.pdf`);
   };
 
   return (
