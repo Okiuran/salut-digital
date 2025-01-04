@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { db, auth } from '../../firebase-config.ts';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, deleteField } from 'firebase/firestore';
 
 interface Appointment {
   profesional: string;
@@ -87,15 +87,26 @@ const ModificarCita: React.FC = () => {
       }
 
       const appointmentRef = doc(db, 'appointments', appointment.id);
-      await updateDoc(appointmentRef, {
+
+      const updateData: any = {
         profesional: appointment.profesional,
         presencial: appointment.presencial,
         categoria: appointment.categoria,
         subcategoria: appointment.subcategoria,
-        motivo: appointment.motivo,
         fecha: appointment.fecha,
         hora: appointment.hora,
-      });
+        motivo: appointment.motivo,
+    };
+
+      if (!appointment.subcategoria) {
+        updateData.subcategoria = deleteField();
+      }
+      if (!appointment.motivo) {
+        updateData.motivo = deleteField();
+      }
+
+      // Actualizar el documento en Firebase
+      await updateDoc(appointmentRef, updateData);
 
       setSuccess(true);
 

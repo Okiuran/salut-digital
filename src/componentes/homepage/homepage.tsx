@@ -125,8 +125,8 @@ const HomePage: React.FC = () => {
       </p>
       <p>
       {language === 'es'
-          ? 'Puedes acceder desde el mismo navegador o la versión web de móvil.'
-          : 'Pots accedir des del mateix navegador o la versió web de mòbil.'}
+          ? 'Puedes acceder desde el mismo navegador o aplicación web de móvil.'
+          : 'Pots accedir des del mateix navegador o aplicació web de mòbil.'}
       </p>
       <div>
         {!user ? (
