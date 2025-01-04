@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useLanguage } from '../idioma/preferencia-idioma.tsx';
+import '../map.css';
 
 const containerStyle = {
   width: '100%',
@@ -18,29 +19,27 @@ const MapComponent: React.FC = () => {
   const [postalCode, setPostalCode] = useState('');
   const [mapCenter, setMapCenter] = useState(center);
 
+  const { isLoaded, loadError } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: 'AIzaSyDt5bbX4TNFbmTwIkw3v7upr41eK2ZB8so',
+    libraries: ['places'],
+  });
+
   const geocodePostalCode = async (postalCode: string) => {
     const geocoder = new google.maps.Geocoder();
-
     return new Promise<google.maps.LatLng>((resolve, reject) => {
       geocoder.geocode({ address: postalCode }, (results, status) => {
-        if (status === google.maps.GeocoderStatus.OK && results && results[0]?.geometry?.location) {
+        if (status === google.maps.GeocoderStatus.OK && results?.[0]?.geometry?.location) {
           resolve(results[0].geometry.location);
         } else {
-          reject(
-            results
-              ? `Geocoding error: ${status}`
-              : 'Geocoding error: No results returned'
-          );
+          reject(`Geocoding error: ${status}`);
         }
       });
     });
   };
 
   const searchNearby = async (location: { lat: number; lng: number }) => {
-    const service = new google.maps.places.PlacesService(
-      document.createElement('div')
-    );
-
+    const service = new google.maps.places.PlacesService(document.createElement('div'));
     const request = {
       location,
       radius: 5000,
@@ -72,39 +71,32 @@ const MapComponent: React.FC = () => {
     }
   };
 
-  return (
-    <LoadScript googleMapsApiKey="AIzaSyDt5bbX4TNFbmTwIkw3v7upr41eK2ZB8so" libraries={['places']}>
-      <div>
-        <div style={{ marginBottom: '20px' }}>
-          <input
-            type="text"
-            placeholder={
-              language === 'es'
-                ? 'Introduce el código postal'
-                : 'Introdueix el codi postal'
-            }
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-          />
-          <button onClick={handleSearch}>
-            {language === 'es' ? 'Buscar' : 'Cercar'}
-          </button>
-        </div>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={mapCenter}
-          zoom={12}
-        >
-          {markers.map((marker, index) => (
-            <Marker
-              key={index}
-              position={marker.position}
-              title={marker.name}
-            />
-          ))}
-        </GoogleMap>
+  if (loadError) {
+    return <div>Error loading Google Maps API</div>;
+  }
+
+  return isLoaded ? (
+    <div>
+      <div className="search-container">
+        <input
+          className="search-input"
+          type="text"
+          placeholder={language === 'es' ? 'Introduce el código postal' : 'Introdueix el codi postal'}
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+        />
+        <button className="search-button" onClick={handleSearch}>
+          {language === 'es' ? 'Buscar' : 'Cercar'}
+        </button>
       </div>
-    </LoadScript>
+      <GoogleMap mapContainerStyle={containerStyle} center={mapCenter} zoom={12}>
+        {markers.map((marker, index) => (
+          <Marker key={index} position={marker.position} title={marker.name} />
+        ))}
+      </GoogleMap>
+    </div>
+  ) : (
+    <div>Loading...</div>
   );
 };
 

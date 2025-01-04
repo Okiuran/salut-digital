@@ -28,9 +28,14 @@ const ModificarCita: React.FC = () => {
   const profesionales = [
     language === 'es' ? 'Médico de cabecera' : 'Metge de capçalera',
     language === 'es' ? 'Enfermero/a' : 'Infermer/a',
-    language === 'es' ? 'Ginecología' : 'Ginecologia',
+    'Matrona',
     language === 'es' ? 'Extracciones' : 'Extraccions',
     language === 'es' ? 'Vacuna gripe/covid' : 'Vacuna grip/covid',
+    'Dentista',
+    'Higienista dental',
+    language === 'es' ? 'Nutrición' : 'Nutrició',
+    language === 'es' ? 'Farmacia' : 'Farmàcia',
+    language === 'es' ? 'Trabajadora social' : 'Treballadora social',
     language === 'es' ? 'Otros' : 'Altres',
   ];
 
