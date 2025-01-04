@@ -56,6 +56,42 @@ export const translations = {
         successUpdateProfile: "Perfil actualizado con éxito.",
         formError: "Corrige los errores en el formulario.",
       },
+      saludMental: {
+        title: 'Información sobre salud mental',
+        attentionProcesses: {
+          title: 'Procesos de atención en salud mental',
+          referral: 'Derivación desde Atención Primaria a psiquiatría:',
+          referralDescription: 'El médico de cabecera evalúa la necesidad de una consulta especializada y realiza la derivación correspondiente a la Unidad de Salud Mental.',
+          psychiatricEmergencies: 'Urgencias psiquiátricas:',
+          psychiatricEmergenciesDescription: 'Las urgencias de salud mental se gestionan en servicios hospitalarios especializados que cuentan con personal capacitado para atender crisis inmediatas.',
+          followUp: 'Seguimiento en consultas ambulatorias:',
+          followUpDescription: 'Después de una evaluación inicial, los pacientes pueden ser atendidos en consultas programadas con especialistas en salud mental para continuar con su tratamiento.',
+        },
+        roles: {
+          title: 'Roles en las Unidades de salud mental',
+          psychiatrist: {
+            title: 'Psiquiatría',
+            description: 'Médico especialista en salud mental que diagnostica y trata trastornos psiquiátricos, incluyendo la prescripción de medicamentos.',
+          },
+          psychologist: {
+            title: 'Psicología',
+            description: 'Profesional que realiza evaluaciones psicológicas, terapia individual o grupal y estrategias de apoyo emocional.',
+          },
+          nurse: {
+            title: 'Enfermería',
+            description: 'Apoya en la gestión de tratamientos, seguimiento de pacientes y educación sobre la salud mental.',
+          },
+        },
+        resources: {
+          title: 'Recursos',
+          contactPhones: 'Teléfonos de contacto:',
+          suicidePrevention: 'Teléfono nacional de atención al suicidio:',
+          mentalHealthLine: 'Línea de ayuda en salud mental:',
+          specializedLinks: 'Enlaces a servicios especializados:',
+          moreInfo: 'Más información',
+          psychiatryPortal: 'Portal de Psiquiatría',
+        },
+      },
     },
     ca: {
       login: {
@@ -113,6 +149,42 @@ export const translations = {
         errorUpdateProfile: "Error en actualitzar el perfil.",
         successUpdateProfile: "Perfil actualitzat amb èxit.",
         formError: "Corregeix els errors en el formulari.",
+      },
+      saludMental: {
+        title: 'Informació sobre salut mental',
+        attentionProcesses: {
+          title: 'Processos d\'atenció amb salut mental',
+          referral: 'Derivació des de Atenció Primària a psiquiatria:',
+          referralDescription: 'El metge de capçalera evalua la necessitat d\'una consulta especialitzada i realitza la derivació corresponent a la Unitat de Salut Mental.',
+          psychiatricEmergencies: 'Urgències psiquiàtriques:',
+          psychiatricEmergenciesDescription: 'Les urgències de salut mental es gestionen en serveis hospitalaris especialitzats amb personal capacitat para atendre crisis immediates.',
+          followUp: 'Seguiment en consultes ambulatòries:',
+          followUpDescription: 'Després d\'una evaluació inicial, els pacients poden ser atesos en consultes programades amb especialistes en salut mental per a continuar amb el seu tratament.',
+        },
+        roles: {
+          title: 'Rols en les Unitats de salut mental',
+          psychiatrist: {
+            title: 'Psiquiatria',
+            description: 'Metge especialista en salut mental que diagnostica i trata trastorns psiquiàtrics, incloent la prescripció de medicaments.',
+          },
+          psychologist: {
+            title: 'Psicologia',
+            description: 'Professional que realitza evaluacions psicològiques, teràpia individual o grupal i estratègies de suport emocional.',
+          },
+          nurse: {
+            title: 'Enfermeria',
+            description: 'Dona suport amb la gestió de trataments, seguiment de pacients i educació sobre la salut mental.',
+          },
+        },
+        resources: {
+          title: 'Recursos',
+          contactPhones: 'Telèfons de contacte:',
+          suicidePrevention: 'Telèfon nacional d\'atenció al suïcidi:',
+          mentalHealthLine: 'Línea d\'ajuda amb salut mental:',
+          specializedLinks: 'Enllaços a serveis especializats:',
+          moreInfo: 'Més informació',
+          psychiatryPortal: 'Portal de Psiquiatria',
+        },
       },
     },
   };

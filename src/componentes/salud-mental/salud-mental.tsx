@@ -1,56 +1,53 @@
 import React from 'react';
 import { Container, Row, Col, ListGroup, Card } from 'react-bootstrap';
+import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 
 const SaludMental: React.FC = () => {
+  const { translate } = useLanguage();
+
   return (
     <Container className="mt-5">
-      <h1 className="mb-4">Información sobre salud mental</h1>
+      <h1 className="mb-4">{translate('saludMental.title')}</h1>
 
       <section>
-        <h2>Procesos de atención en salud mental</h2>
+        <h2>{translate('saludMental.attentionProcesses.title')}</h2>
         <ListGroup className="mb-4">
           <ListGroup.Item>
-            <strong>Derivación desde Atención Primaria a psiquiatría:</strong> El médico de cabecera evalúa la necesidad de una consulta especializada y realiza la derivación correspondiente a la Unidad de Salud Mental.
+            <strong>{translate('saludMental.attentionProcesses.referral')}</strong> {translate('saludMental.attentionProcesses.referralDescription')}
           </ListGroup.Item>
           <ListGroup.Item>
-            <strong>Urgencias psiquiátricas:</strong> Las urgencias de salud mental se gestionan en servicios hospitalarios especializados que cuentan con personal capacitado para atender crisis inmediatas.
+            <strong>{translate('saludMental.attentionProcesses.psychiatricEmergencies')}</strong> {translate('saludMental.attentionProcesses.psychiatricEmergenciesDescription')}
           </ListGroup.Item>
           <ListGroup.Item>
-            <strong>Seguimiento en consultas ambulatorias:</strong> Después de una evaluación inicial, los pacientes pueden ser atendidos en consultas programadas con especialistas en salud mental para continuar con su tratamiento.
+            <strong>{translate('saludMental.attentionProcesses.followUp')}</strong> {translate('saludMental.attentionProcesses.followUpDescription')}
           </ListGroup.Item>
         </ListGroup>
       </section>
 
       <section>
-        <h2>Roles en las Unidades de salud mental</h2>
+        <h2>{translate('saludMental.roles.title')}</h2>
         <Row>
           <Col md={4}>
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>Psiquiatra</Card.Title>
-                <Card.Text>
-                  Médico especialista en salud mental que diagnostica y trata trastornos psiquiátricos, incluyendo la prescripción de medicamentos.
-                </Card.Text>
+                <Card.Title>{translate('saludMental.roles.psychiatrist.title')}</Card.Title>
+                <Card.Text>{translate('saludMental.roles.psychiatrist.description')}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
           <Col md={4}>
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>Psicólogo</Card.Title>
-                <Card.Text>
-                  Profesional que realiza evaluaciones psicológicas, terapia individual o grupal y estrategias de apoyo emocional.
-                </Card.Text>
+                <Card.Title>{translate('saludMental.roles.psychologist.title')}</Card.Title>
+                <Card.Text>{translate('saludMental.roles.psychologist.description')}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
           <Col md={4}>
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>Enfermero/a</Card.Title>
-                <Card.Text>
-                  Apoya en la gestión de tratamientos, seguimiento de pacientes y educación sobre la salud mental.
-                </Card.Text>
+                <Card.Title>{translate('saludMental.roles.nurse.title')}</Card.Title>
+                <Card.Text>{translate('saludMental.roles.nurse.description')}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
@@ -58,16 +55,18 @@ const SaludMental: React.FC = () => {
       </section>
 
       <section>
-        <h2>Recursos</h2>
+        <h2>{translate('saludMental.resources.title')}</h2>
         <ListGroup className="mb-4">
           <ListGroup.Item>
-            <strong>Teléfonos de contacto:</strong> Teléfono nacional de atención al suicidio: <a href="tel:024">024</a>. Línea de ayuda en salud mental: <a href="tel:900123456">900 123 456</a>.
+            <strong>{translate('saludMental.resources.contactPhones')}</strong>
+            {translate('saludMental.resources.suicidePrevention')} <a href="tel:024">024</a>.
+            {translate('saludMental.resources.mentalHealthLine')} <a href="tel:900123456">900 123 456</a>.
           </ListGroup.Item>
           <ListGroup.Item>
-            <strong>Enlaces a servicios especializados:</strong>
+            <strong>{translate('saludMental.resources.specializedLinks')}</strong>
             <ul>
-              <li><a href="https://medlineplus.gov/spanish/mentalhealth.html" target="_blank" rel="noopener noreferrer">Más información</a></li>
-              <li><a href="https://www.psiquiatria.com" target="_blank" rel="noopener noreferrer">Portal de Psiquiatría</a></li>
+              <li><a href="https://medlineplus.gov/spanish/mentalhealth.html" target="_blank" rel="noopener noreferrer">{translate('saludMental.resources.moreInfo')}</a></li>
+              <li><a href="https://www.psiquiatria.com" target="_blank" rel="noopener noreferrer">{translate('saludMental.resources.psychiatryPortal')}</a></li>
             </ul>
           </ListGroup.Item>
         </ListGroup>
