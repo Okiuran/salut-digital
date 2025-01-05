@@ -6,6 +6,8 @@ import { auth } from '../../firebase-config.ts';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { validatePassword } from '../../utils/validaciones.ts';
 
+import '../../utils/button.css';
+
 const RegisterPage: React.FC = () => {
   const { language, translate } = useLanguage();
   const navigate = useNavigate();
@@ -102,7 +104,7 @@ const RegisterPage: React.FC = () => {
             {translate('register.passwordsMismatch')}
           </Form.Control.Feedback>
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="custom-submit-button">
           {translate('register.registerButton')}
         </Button>
       </Form>

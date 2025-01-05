@@ -1,0 +1,13 @@
+.custom-submit-button {
+    background-color: #383a42 !important;
+    border-color: #383a42 !important;
+  }
+
+  .custom-submit-button:hover {
+    background-color: #111112 !important;
+    border-color: #111112 !important;
+  }
+
+  .custom-submit-button:focus {
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5) !important; /* Efecto al enfocar */
+  }

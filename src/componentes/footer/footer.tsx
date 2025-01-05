@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>2024 SalutDigital</p>
+        <p>2024-2025 SalutDigital</p>
         <p>
           © <a href="https://lamevasalut.gencat.cat/" target="_blank" rel="noopener noreferrer">La Meva Salut</a>
         </p>

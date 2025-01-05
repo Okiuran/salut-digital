@@ -170,7 +170,7 @@ const PerfilUsuario: React.FC = () => {
             />
             <Form.Control.Feedback type="invalid">{errors.dni}</Form.Control.Feedback>
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" className="custom-submit-button">
             {translate('profile.updateButton')}
           </Button>
           <Button variant="secondary" onClick={() => setEditing(false)}>
@@ -194,7 +194,7 @@ const PerfilUsuario: React.FC = () => {
           <p>
             <strong>{translate('profile.dni')}:</strong> {profile.dni}
           </p>
-          <Button variant="primary" onClick={() => setEditing(true)}>
+          <Button variant="dark" onClick={() => setEditing(true)}>
             {translate('profile.editButton')}
           </Button>
           <Button variant="secondary" onClick={() => navigate('/')}>

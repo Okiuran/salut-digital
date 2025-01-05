@@ -178,7 +178,7 @@ const HistorialMedico: React.FC = () => {
               <td>{appointment.profesional}</td>
               <td>{appointment.motivo}</td>
               <td>
-                <Button variant="primary" onClick={() => downloadPDF(appointment)}>
+                <Button variant="info" onClick={() => downloadPDF(appointment)}>
                   {language === 'es' ? 'Descargar PDF' : 'Descarregar PDF'}
                 </Button>
               </td>

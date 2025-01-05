@@ -6,6 +6,8 @@ import { auth, db } from '../../firebase-config.ts';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
+import '../../utils/button.css';
+
 const LoginPage: React.FC = () => {
   const { translate } = useLanguage();
   const navigate = useNavigate();
@@ -84,7 +86,7 @@ const LoginPage: React.FC = () => {
             required
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="custom-submit-button">
           {translate('login.loginButton')}
         </Button>
       </Form>
@@ -108,7 +110,7 @@ const LoginPage: React.FC = () => {
 
       <div className="mt-3">
         <p>{translate('login.forgotPassword')}</p>
-        <Button variant="success" onClick={() => navigate('/reset-password')}>
+        <Button variant="warning" onClick={() => navigate('/reset-password')}>
           {translate('login.resetPasswordButton')}
         </Button>
       </div>

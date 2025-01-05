@@ -9,6 +9,8 @@ import { doc, getDoc, deleteDoc, collection, query, where, getDocs } from 'fireb
 import imagen1 from '../../assets/pedir-cita.png';
 import imagen2 from '../../assets/consultar-cita.png';
 
+import './homepage.css';
+
 import Swal from 'sweetalert2';
 
 interface Appointment {
@@ -128,27 +130,27 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="text-center">
-      <h1>SalutDigital</h1>
+    <div className="homepage-container text-center d-flex flex-column justify-content-center align-items-center">
+      <h1 className="homepage-title">SalutDigital</h1>
       <br />
-      <p>
+      <p className="homepage-description">
         {language === 'es'
           ? 'Gestiona tus citas médicas de manera sencilla y segura.'
           : 'Gestiona les teves cites mèdiques de manera senzilla i segura.'}
       </p>
-      <p>
+      <p className="homepage-description">
       {language === 'es'
           ? 'Puedes acceder desde el mismo navegador o aplicación web de móvil.'
           : 'Pots accedir des del mateix navegador o aplicació web de mòbil.'}
       </p>
-      <div>
+      <div className="mt-4">
         {!user ? (
           <>
-            <Button variant="primary" onClick={() => navigate('/register')}>
+            <Button variant="outline-dark" onClick={() => navigate('/register')}>
               {language === 'es' ? 'Registrarse' : 'Registrar-se'}
             </Button>
             <Button
-              variant="primary"
+              variant="outline-dark"
               onClick={() => navigate('/login')}
               className="ms-2"
             >
