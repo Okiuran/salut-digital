@@ -5,6 +5,8 @@ import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { db, auth } from '../../firebase-config.ts';
 import { doc, updateDoc, deleteField } from 'firebase/firestore';
 
+import Swal from 'sweetalert2';
+
 interface Appointment {
   profesional: string;
   presencial: boolean;
@@ -113,9 +115,14 @@ const ModificarCita: React.FC = () => {
       // Actualizar el documento en Firebase
       await updateDoc(appointmentRef, updateData);
 
-      setSuccess(true);
-
-      setTimeout(() => navigate('/'), 2000);
+      Swal.fire({
+        title: language === 'es' ? '¡Cita modificada!' : 'Cita modificada!',
+        text: language === 'es' ? 'Redirigiendo al inicio...' : 'Redirigint a l\'inici...',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false,
+        willClose: () => navigate('/'),
+      });
     } catch (error) {
       console.error('Error al modificar la cita:', error);
       setError(
@@ -133,14 +140,6 @@ const ModificarCita: React.FC = () => {
   return (
     <div className="container mt-5">
       <h2>{language === 'es' ? 'Modificar cita' : 'Modificar cita'}</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && (
-        <Alert variant="success">
-          {language === 'es'
-            ? 'Cita modificada con éxito, redirigiendo al inicio'
-            : 'Cita modificada amb èxit, redirigint a l\'inici...'}
-        </Alert>
-      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="profesional">
           <Form.Label>{language === 'es' ? 'Profesional' : 'Professional'}</Form.Label>

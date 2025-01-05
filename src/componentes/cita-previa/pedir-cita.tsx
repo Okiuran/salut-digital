@@ -5,6 +5,8 @@ import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { db, auth } from '../../firebase-config.ts';
 import { addDoc, collection } from 'firebase/firestore';
 
+import Swal from 'sweetalert2';
+
 const PedirCita: React.FC = () => {
   const { language } = useLanguage();
   const navigate = useNavigate();
@@ -102,9 +104,14 @@ const PedirCita: React.FC = () => {
       };
 
       await addDoc(collection(db, 'appointments'), appointmentData);
-      setSuccess(true);
-
-      setTimeout(() => navigate('/'), 2000);
+      Swal.fire({
+        title: language === 'es' ? '¡Cita registrada!' : 'Cita registrada!',
+        text: language === 'es' ? 'Redirigiendo al inicio...' : 'Redirigint a l\'inici...',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false,
+        willClose: () => navigate('/'),
+      });
     } catch (error) {
       console.error('Error al guardar la cita:', error);
       setError(
@@ -118,14 +125,6 @@ const PedirCita: React.FC = () => {
   return (
     <div className="container mt-5">
       <h2>{language === 'es' ? 'Pedir cita' : 'Demanar cita'}</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && (
-        <Alert variant="success">
-          {language === 'es'
-            ? 'Cita registrada, redirigiendo al inicio'
-            : 'Cita registrada, redirigint a l\'inici...'}
-        </Alert>
-      )}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="profesional">
           <Form.Label>{language === 'es' ? 'Profesional' : 'Professional'}</Form.Label>

@@ -9,6 +9,8 @@ import { doc, getDoc, deleteDoc, collection, query, where, getDocs } from 'fireb
 import imagen1 from '../../assets/pedir-cita.png';
 import imagen2 from '../../assets/consultar-cita.png';
 
+import Swal from 'sweetalert2';
+
 interface Appointment {
   profesional: string;
   presencial: boolean;
@@ -76,43 +78,54 @@ const HomePage: React.FC = () => {
   };
 
   const handleCancelAppointment = async (index: number) => {
-    // Mostrar confirmación
-    const confirmCancel = window.confirm(
-      language === 'es'
-        ? '¿Estás seguro de que deseas cancelar esta cita?'
-        : 'Estàs segur que vols cancel·lar aquesta cita?'
-    );
+    const appointmentToCancel = appointments[index];
 
-    if (!confirmCancel) {
-      return; // Si el usuario cancela, se sale de la función
-    }
+    Swal.fire({
+      title: language === 'es' ? '¿Estás seguro de que quieres cancelar la cita?' : 'Estàs segur de que vols cancel·lar la cita?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: language === 'es' ? 'Sí, cancelar' : 'Sí, cancel·lar',
+      cancelButtonText: language === 'es' ? 'No, mantener' : 'No, mantenir',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const q = query(
+            collection(db, 'appointments'),
+            where('userId', '==', auth.currentUser?.uid),
+            where('fecha', '==', appointmentToCancel.fecha),
+            where('hora', '==', appointmentToCancel.hora),
+            where('profesional', '==', appointmentToCancel.profesional)
+          );
 
-    try {
-      const appointmentToCancel = appointments[index];
+          const querySnapshot = await getDocs(q);
 
-      // Encuentra el documento en firebase
-      const q = query(
-        collection(db, 'appointments'),
-        where('userId', '==', auth.currentUser?.uid),
-        where('fecha', '==', appointmentToCancel.fecha),
-        where('hora', '==', appointmentToCancel.hora),
-        where('profesional', '==', appointmentToCancel.profesional)
-      );
+          if (!querySnapshot.empty) {
+            const docId = querySnapshot.docs[0].id;
+            await deleteDoc(doc(db, 'appointments', docId));
 
-      const querySnapshot = await getDocs(q);
+            setAppointments((prev) => prev.filter((_, i) => i !== index));
 
-      if (!querySnapshot.empty) {
-        const docId = querySnapshot.docs[0].id; // Recoge el primer documento que coincide
-        await deleteDoc(doc(db, 'appointments', docId)); // Lo elimina de firebase
-
-        // Actualiza el estado local
-        setAppointments((prev) => prev.filter((_, i) => i !== index));
+            Swal.fire({
+              title: language === 'es' ? 'Tu cita ha sido cancelada.' : 'La teva cita ha estat cancel·lada.',
+              icon: 'success',
+            });
+          }
+        } catch (error) {
+          console.error('Error al cancelar la cita:', error);
+          Swal.fire({
+            title: language === 'es' ? 'Error' : 'Error',
+            text:
+              language === 'es'
+                ? 'Hubo un problema al intentar cancelar la cita.'
+                : 'Hi ha hagut un problema en cancel·lar la cita.',
+            icon: 'error',
+          });
+        }
       }
-    } catch (error) {
-      console.error('Error al cancelar la cita:', error);
-    }
+    });
   };
-
 
   return (
     <div className="text-center">

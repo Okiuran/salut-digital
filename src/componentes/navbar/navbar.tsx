@@ -71,7 +71,7 @@ const MyNavbar: React.FC = () => {
             {language === 'es' ? 'Servicios' : 'Serveis'}
           </Nav.Link>
           <Nav.Link as={Link} to="/salud-mental">
-  {language === 'es' ? 'Otros' : 'Altres'}
+  {language === 'es' ? 'Más información' : 'Més informació'}
 </Nav.Link>
 
           <Nav.Link onClick={() => setLanguage(language === 'es' ? 'ca' : 'es')}>
