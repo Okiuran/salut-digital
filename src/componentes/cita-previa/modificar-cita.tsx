@@ -56,7 +56,7 @@ const ModificarCita: React.FC = () => {
   useEffect(() => {
     const stateAppointment = location.state?.appointment;
     if (stateAppointment) {
-      setAppointment(stateAppointment);
+      setAppointment({ ...stateAppointment, motivo: stateAppointment.motivo || '' });
     } else {
       setError(
         language === 'es'
@@ -98,9 +98,9 @@ const ModificarCita: React.FC = () => {
         presencial: appointment.presencial,
         categoria: appointment.categoria,
         subcategoria: appointment.subcategoria,
+        motivo: appointment.motivo || '',
         fecha: appointment.fecha,
         hora: appointment.hora,
-        motivo: appointment.motivo,
     };
 
       if (!appointment.subcategoria) {
@@ -206,6 +206,22 @@ const ModificarCita: React.FC = () => {
         </Form.Group>
       )}
 
+        <Form.Group className="mb-3" controlId="motivo">
+          <Form.Label>
+            {language === 'es' ? 'Motivo de consulta' : 'Motiu de consulta'}
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder={
+              language === 'es'
+                ? 'Escribe el motivo de tu consulta aquí...'
+                : 'Escriu el motiu de la teva consulta aquí...'
+            }
+            value={appointment.motivo}
+            onChange={(e) => setAppointment({ ...appointment, motivo: e.target.value })}
+          />
+        </Form.Group>
 
         <Form.Group className="mb-3" controlId="fecha">
           <Form.Label>{language === 'es' ? 'Fecha' : 'Data'}</Form.Label>

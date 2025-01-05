@@ -11,12 +11,14 @@ const PedirCita: React.FC = () => {
 
   const [profesional, setProfesional] = useState('');
   const [presencial, setPresencial] = useState('');
-  const [motivo, setMotivo] = useState('');
-  const [subMotivo, setSubMotivo] = useState('');
+  const [categoria, setCategoria] = useState('');
+  const [subcategoria, setSubcategoria] = useState('');
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+
+  const [motivo, setMotivo] = useState('');
 
   const profesionales = [
     language === 'es' ? 'Médico de cabecera' : 'Metge de capçalera',
@@ -37,21 +39,23 @@ const PedirCita: React.FC = () => {
     language === 'es' ? 'No presencial' : 'No presencial',
   ];
 
-  const motivosConsulta = {
-    general: language === 'es' ? 'Consulta general' : 'Consulta general',
-    receta: {
-      label: language === 'es' ? 'Receta médica' : 'Recepta mèdica',
-      subMotivos: [
-        language === 'es' ? 'Crónico' : 'Crònic',
-        language === 'es' ? 'A demanda' : 'A demanda',
-        language === 'es' ? 'Otros' : 'Altres',
-      ],
-    },
+  const categoriasMotivo = [
+    language === 'es' ? 'Consulta general' : 'Consulta general',
+    language === 'es' ? 'Receta médica' : 'Recepta mèdica',
+  ];
+
+  const subcategoriasMotivo: { [key: string]: string[] } = {
+    'Consulta general': [],
+    [language === 'es' ? 'Receta médica' : 'Recepta mèdica']: [
+      language === 'es' ? 'Crónico' : 'Crònic',
+      language === 'es' ? 'A demanda' : 'A demanda',
+      language === 'es' ? 'Otros' : 'Altres',
+    ],
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!profesional || !presencial || (!motivo && !subMotivo) || !fecha || !hora) {
+    if (!profesional || !presencial || !categoria || (!subcategoria && subcategoriasMotivo[categoria]?.length > 0) || !fecha || !hora) {
       setError(
         language === 'es'
           ? 'Por favor, completa todos los campos.'
@@ -89,7 +93,9 @@ const PedirCita: React.FC = () => {
         userId,
         profesional,
         presencial: presencial === 'Presencial',
-        motivo: subMotivo || motivo,
+        categoria,
+        subcategoria: subcategoria || '',
+        motivo,
         fecha,
         hora,
         createdAt: new Date().toISOString(),
@@ -157,27 +163,60 @@ const PedirCita: React.FC = () => {
           </Form.Select>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="motivo">
-          <Form.Label>{language === 'es' ? 'Motivo de consulta' : 'Motiu de consulta'}</Form.Label>
+        <Form.Group className="mb-3" controlId="categoria">
+          <Form.Label>{language === 'es' ? 'Categoría' : 'Categoria'}</Form.Label>
           <Form.Select
-            value={motivo}
+            value={categoria}
             onChange={(e) => {
-              setMotivo(e.target.value);
-              setSubMotivo('');
+              setCategoria(e.target.value);
+              setSubcategoria('');
             }}
           >
             <option value="">
-              {language === 'es' ? 'Selecciona un motivo de consulta' : 'Selecciona un motiu de consulta'}
+              {language === 'es' ? 'Selecciona una categoría' : 'Selecciona una categoria'}
             </option>
-            <option value="general">{motivosConsulta.general}</option>
-            <optgroup label={motivosConsulta.receta.label}>
-              {motivosConsulta.receta.subMotivos.map((sub) => (
+            {categoriasMotivo.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+
+        {categoria && subcategoriasMotivo[categoria]?.length > 0 && (
+          <Form.Group className="mb-3" controlId="subcategoria">
+            <Form.Label>{language === 'es' ? 'Subcategoría' : 'Subcategoria'}</Form.Label>
+            <Form.Select
+              value={subcategoria}
+              onChange={(e) => setSubcategoria(e.target.value)}
+            >
+              <option value="">
+                {language === 'es' ? 'Selecciona una subcategoría' : 'Selecciona una subcategoria'}
+              </option>
+              {subcategoriasMotivo[categoria]?.map((sub) => (
                 <option key={sub} value={sub}>
                   {sub}
                 </option>
               ))}
-            </optgroup>
-          </Form.Select>
+            </Form.Select>
+          </Form.Group>
+        )}
+
+        <Form.Group className="mb-3" controlId="motivo">
+          <Form.Label>
+            {language === 'es' ? 'Motivo de consulta' : 'Motiu de consulta'}
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder={
+              language === 'es'
+                ? 'Escribe el motivo de tu consulta aquí...'
+                : 'Escriu el motiu de la teva consulta aquí...'
+            }
+            value={motivo}
+            onChange={(e) => setMotivo(e.target.value)}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="fecha">
