@@ -75,7 +75,10 @@ const HistorialMedico: React.FC = () => {
     // Obtener información del usuario actual desde Firebase
     const userId = auth.currentUser?.uid;
     let userName = '';
+    let userLastName = '';
     let userBirthDate = '';
+    let userDni = '';
+    let userHealthCard = '';
 
     if (userId) {
       try {
@@ -85,7 +88,10 @@ const HistorialMedico: React.FC = () => {
         if (userSnapshot.exists()) {
           const userData = userSnapshot.data() as UserData;
           userName = userData.nombre;
+          userLastName = userData.apellidos;
           userBirthDate = userData.fechaNacimiento;
+          userDni = userData.dni;
+          userHealthCard = userData.tarjetaSanitaria;
         }
       } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);
@@ -112,10 +118,13 @@ const HistorialMedico: React.FC = () => {
     pdfDoc.text(language === 'es' ? 'Información' : 'Informació', 10, 20);
     pdfDoc.setFontSize(12);
     pdfDoc.text(`${language === 'es' ? 'Nombre:' : 'Nom:'} ${userName}`, 10, 30);
-    pdfDoc.text(`${language === 'es' ? 'Fecha de nacimiento:' : 'Data de naixement:'} ${userBirthDate}`, 10, 40);
+    pdfDoc.text(`${language === 'es' ? 'Apellidos:' : 'Cognoms:'} ${userLastName}`, 10, 40);
+    pdfDoc.text(`${language === 'es' ? 'Fecha de nacimiento:' : 'Data de naixement:'} ${userBirthDate}`, 10, 50);
+    pdfDoc.text(`${language === 'es' ? 'DNI:' : 'DNI:'} ${userDni}`, 10, 60);
+    pdfDoc.text(`${language === 'es' ? 'Tarjeta sanitaria:' : 'Targeta sanitària:'} ${userHealthCard}`, 10, 70);
 
     pdfDoc.setFontSize(16);
-    pdfDoc.text(language === 'es' ? 'Plan de Medicación' : 'Pla de Medicació', 10, 60);
+    pdfDoc.text(language === 'es' ? 'Plan de medicación' : 'Pla de medicació', 10, 90);
 
     const tableData = [
       [
@@ -139,7 +148,7 @@ const HistorialMedico: React.FC = () => {
     pdfDoc.autoTable({
       head: [headers],
       body: tableData,
-      startY: 70,
+      startY: 100,
       styles: { fontSize: 10, cellPadding: 3 },
       headStyles: { fillColor: [22, 160, 133], textColor: [255, 255, 255] },
       theme: 'striped',
