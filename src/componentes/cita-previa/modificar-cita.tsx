@@ -46,7 +46,7 @@ const ModificarCita: React.FC = () => {
 
   const subcategoriasMotivo: { [key: string]: string[] } = {
     'Consulta general': [],
-    'Receta médica': [
+    [language === 'es' ? 'Receta médica' : 'Recepta mèdica']: [
       language === 'es' ? 'Crónico' : 'Crònic',
       language === 'es' ? 'A demanda' : 'A demanda',
       language === 'es' ? 'Otros' : 'Altres',
@@ -69,7 +69,7 @@ const ModificarCita: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!appointment?.profesional || !appointment?.presencial || !appointment?.categoria || !appointment?.fecha || !appointment?.hora) {
+    if (!appointment?.profesional || !appointment.presencial === undefined || !appointment?.categoria || !appointment?.fecha || !appointment?.hora) {
       setError(
         language === 'es'
           ? 'Por favor, completa todos los campos.'
@@ -187,24 +187,25 @@ const ModificarCita: React.FC = () => {
           </Form.Select>
         </Form.Group>
 
-        {appointment.categoria && subcategoriasMotivo[appointment.categoria].length > 0 && (
-          <Form.Group className="mb-3" controlId="subcategoria">
-            <Form.Label>{language === 'es' ? 'Subcategoría' : 'Subcategoria'}</Form.Label>
-            <Form.Select
-              value={appointment.subcategoria}
-              onChange={(e) => setAppointment({ ...appointment, subcategoria: e.target.value })}
-            >
-              <option value="">
-                {language === 'es' ? 'Selecciona una subcategoría' : 'Selecciona una subcategoria'}
+        {appointment.categoria && subcategoriasMotivo[appointment.categoria]?.length > 0 && (
+        <Form.Group className="mb-3" controlId="subcategoria">
+          <Form.Label>{language === 'es' ? 'Subcategoría' : 'Subcategoria'}</Form.Label>
+          <Form.Select
+            value={appointment.subcategoria}
+            onChange={(e) => setAppointment({ ...appointment, subcategoria: e.target.value })}
+          >
+            <option value="">
+              {language === 'es' ? 'Selecciona una subcategoría' : 'Selecciona una subcategoria'}
+            </option>
+            {subcategoriasMotivo[appointment.categoria]?.map((sub) => (
+              <option key={sub} value={sub}>
+                {sub}
               </option>
-              {subcategoriasMotivo[appointment.categoria].map((sub) => (
-                <option key={sub} value={sub}>
-                  {sub}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        )}
+            ))}
+          </Form.Select>
+        </Form.Group>
+      )}
+
 
         <Form.Group className="mb-3" controlId="fecha">
           <Form.Label>{language === 'es' ? 'Fecha' : 'Data'}</Form.Label>
