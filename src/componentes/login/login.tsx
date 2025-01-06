@@ -6,6 +6,8 @@ import { auth, db } from '../../firebase-config.ts';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
+import Swal from 'sweetalert2';
+
 import '../../utils/button.css';
 import '../../utils/auth.css';
 
@@ -45,23 +47,25 @@ const LoginPage: React.FC = () => {
   ? `${translate('login.modalMessageSuccess')} ${userName}`
   : `${translate('login.modalMessageSuccess')} ${user.email}`;
 
-
-      setModalTitle(translate('login.modalTitleSuccess'));
-      setModalMessage(welcomeMessage);
-      setShowModal(true);
-
-      // Redirige al inicio
-      setTimeout(() => {
-        setShowModal(false);
-        navigate('/');
-      }, 3000);
+      Swal.fire({
+        title: translate('login.modalTitleSuccess'),
+        text: welcomeMessage,
+        icon: 'success',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        willClose: () => navigate('/'), // Redirige al inicio
+      });
     } catch (error) {
-      setModalTitle(translate('login.modalTitleError'));
-      setModalMessage(translate('login.modalMessageError'));
-      setShowModal(true);
+      Swal.fire({
+        title: translate('login.modalTitleError'),
+        text: translate('login.modalMessageError'),
+        icon: 'error',
+        confirmButtonText: translate('login.closeModalButton'),
+      });
       console.error(error);
     }
-  };
+    };
 
   return (
     <Container className="auth-container">
