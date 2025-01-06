@@ -4,8 +4,9 @@ import { useLanguage } from '../idioma/preferencia-idioma.tsx';
 import '../map.css';
 
 const containerStyle = {
-  width: '100%',
-  height: '600px',
+  width: '90%',
+  height: '500px',
+  margin: '0 auto',
 };
 
 const center = {
@@ -121,6 +122,11 @@ const MapComponent: React.FC = () => {
           }
           value={postalCode}
           onChange={(e) => setPostalCode(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearch();
+            }
+          }}
         />
         <button className="search-button" onClick={handleSearch}>
           {language === 'es' ? 'Buscar' : 'Cercar'}
