@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { db, auth } from '../../firebase-config.ts';
 import { doc, updateDoc, deleteField } from 'firebase/firestore';
 
 import Swal from 'sweetalert2';
+import '../../utils/button.css';
 
 interface Appointment {
   profesional: string;
@@ -25,7 +26,6 @@ const ModificarCita: React.FC = () => {
 
   const [appointment, setAppointment] = useState<Appointment | null>(null);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
 
   const profesionales = [
     language === 'es' ? 'Médico de cabecera' : 'Metge de capçalera',
@@ -242,7 +242,7 @@ const ModificarCita: React.FC = () => {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="custom-submit-button">
           {language === 'es' ? 'Modificar cita' : 'Modificar cita'}
         </Button>
         <Button

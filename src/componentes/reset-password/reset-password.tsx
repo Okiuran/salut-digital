@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Modal } from 'react-bootstrap';
+import { Form, Button, Modal, Container, Row, Col } from 'react-bootstrap';
 import { auth } from '../../firebase-config.ts';
 import { sendPasswordResetEmail } from 'firebase/auth';
+
+import '../../utils/auth.css';
+import '../../utils/button.css';
 
 const ResetPassword: React.FC = () => {
   const { language } = useLanguage();
@@ -29,7 +32,6 @@ const ResetPassword: React.FC = () => {
       );
       setShowModal(true);
     } catch (error) {
-      // Mostrar mensaje de error
       setModalTitle(language === 'es' ? 'Error' : 'Error');
       setModalMessage(
         language === 'es'
@@ -42,30 +44,43 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>{language === 'es' ? 'Restablecer contraseña' : 'Restablir contrasenya'}</h2>
-      <Form onSubmit={handlePasswordReset}>
-        <Form.Group controlId="formEmail">
-          <Form.Label>{language === 'es' ? 'Correo electrónico' : 'Correu electrònic'}</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder={
-              language === 'es'
-                ? 'Introduce tu correo electrónico'
-                : 'Introdueix el teu correu electrònic'
-            }
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          {language === 'es' ? 'Enviar enlace' : 'Enviar enllaç'}
-        </Button>
-      </Form>
+    <Container className="auth-container">
+      <Row className="justify-content-center">
+        <Col xs={12} md={6}>
+          <h2 className="text-center mb-4">
+            {language === 'es' ? 'Restablecer contraseña' : 'Restablir contrasenya'}
+          </h2>
+          <Form onSubmit={handlePasswordReset}>
+            <Form.Group controlId="formEmail" className="mb-3">
+              <Form.Label>
+                {language === 'es' ? 'Correo electrónico' : 'Correu electrònic'}
+              </Form.Label>
+              <Form.Control
+                type="email"
+                placeholder={
+                  language === 'es'
+                    ? 'Introduce tu correo electrónico'
+                    : 'Introdueix el teu correu electrònic'
+                }
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="w-100 custom-submit-button">
+              {language === 'es' ? 'Enviar enlace' : 'Enviar enllaç'}
+            </Button>
+          </Form>
 
-      {/* Modal para mostrar mensajes */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <div className="text-center mt-4">
+            <Button variant="secondary" onClick={() => navigate('/')}>
+              {language === 'es' ? 'Volver al inicio' : "Tornar a l'inici"}
+            </Button>
+          </div>
+        </Col>
+      </Row>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
@@ -76,11 +91,7 @@ const ResetPassword: React.FC = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      <Button variant="secondary" onClick={() => navigate('/')}>
-        {language === 'es' ? 'Volver al inicio' : "Tornar a l'inici"}
-      </Button>
-    </div>
+    </Container>
   );
 };
 

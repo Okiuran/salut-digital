@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { db, auth } from '../../firebase-config.ts';
 import { addDoc, collection } from 'firebase/firestore';
 
 import Swal from 'sweetalert2';
+
+import '../../utils/button.css';
 
 const PedirCita: React.FC = () => {
   const { language } = useLanguage();
@@ -18,7 +20,6 @@ const PedirCita: React.FC = () => {
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
 
   const [motivo, setMotivo] = useState('');
 
@@ -238,7 +239,7 @@ const PedirCita: React.FC = () => {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="custom-submit-button">
           {language === 'es' ? 'Solicitar cita' : 'Sol·licitar cita'}
         </Button>
         <Button

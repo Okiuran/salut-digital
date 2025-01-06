@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Modal } from 'react-bootstrap';
+import { Form, Button, Modal, Container, Row, Col } from 'react-bootstrap';
 import { auth } from '../../firebase-config.ts';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { validatePassword } from '../../utils/validaciones.ts';
 
 import '../../utils/button.css';
+import '../../utils/auth.css';
 
 const RegisterPage: React.FC = () => {
   const { language, translate } = useLanguage();
@@ -15,8 +16,6 @@ const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  // Modal bootstrap
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalTitle, setModalTitle] = useState('');
@@ -24,7 +23,6 @@ const RegisterPage: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Verificar requisitos de la contraseña
     if (!validatePassword(password)) {
       setModalTitle(translate('register.modalTitleError'));
       setModalMessage(
@@ -36,7 +34,6 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
-    // Verificar que las contraseñas coincidan
     if (password !== confirmPassword) {
       setModalTitle(translate('register.modalTitleError'));
       setModalMessage(translate('register.passwordsMismatch'));
@@ -48,13 +45,11 @@ const RegisterPage: React.FC = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Enviar correo de verificación
       await sendEmailVerification(user);
       setModalTitle(translate('register.modalTitleSuccess'));
       setModalMessage(translate('register.modalMessageSuccess'));
       setShowModal(true);
 
-      // Redirigir a inicio después del registro
       setTimeout(() => {
         navigate('/');
       }, 3000);
@@ -67,64 +62,72 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>{translate('register.title')}</h2>
-      <Form onSubmit={handleRegister}>
-        <Form.Group controlId="formEmail">
-          <Form.Label>{translate('register.emailLabel')}</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder={translate('register.emailPlaceholder')}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formPassword">
-          <Form.Label>{translate('register.passwordLabel')}</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder={translate('register.passwordPlaceholder')}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formConfirmPassword">
-          <Form.Label>{translate('register.confirmPasswordLabel')}</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder={translate('register.confirmPasswordPlaceholder')}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            isInvalid={password !== '' && confirmPassword !== '' && password !== confirmPassword}
-          />
-          <Form.Control.Feedback type="invalid">
-            {translate('register.passwordsMismatch')}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Button variant="primary" type="submit" className="custom-submit-button">
-          {translate('register.registerButton')}
-        </Button>
-      </Form>
+    <Container className="auth-container">
+      <Row className="justify-content-center">
+        <Col xs={12} md={6}>
+          <h2 className="text-center">{translate('register.title')}</h2>
+          <Form onSubmit={handleRegister} className="auth-form">
+            <Form.Group controlId="formEmail">
+              <Form.Label>{translate('register.emailLabel')}</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder={translate('register.emailPlaceholder')}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label>{translate('register.passwordLabel')}</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder={translate('register.passwordPlaceholder')}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formConfirmPassword">
+              <Form.Label>{translate('register.confirmPasswordLabel')}</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder={translate('register.confirmPasswordPlaceholder')}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                isInvalid={password !== '' && confirmPassword !== '' && password !== confirmPassword}
+              />
+              <Form.Control.Feedback type="invalid">
+                {translate('register.passwordsMismatch')}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Button variant="primary" type="submit" className="custom-submit-button w-100">
+              {translate('register.registerButton')}
+            </Button>
+          </Form>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalTitle}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{modalMessage}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            {translate('register.closeModalButton')}
+          <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>{modalTitle}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{modalMessage}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowModal(false)}>
+                {translate('register.closeModalButton')}
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Button
+            variant="secondary"
+            onClick={() => navigate('/')}
+            className="mt-3 w-100"
+          >
+            {translate('register.goBackButton')}
           </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Button variant="secondary" onClick={() => navigate('/')}>
-        {translate('register.goBackButton')}
-      </Button>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

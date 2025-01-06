@@ -10,6 +10,7 @@ import imagen1 from '../../assets/pedir-cita.png';
 import imagen2 from '../../assets/consultar-cita.png';
 
 import './homepage.css';
+import '../../utils/button.css';
 
 import Swal from 'sweetalert2';
 
@@ -244,7 +245,7 @@ const HomePage: React.FC = () => {
             {language === 'es' ? 'Cancelar cita' : 'Cancel·lar cita'}
           </Button>
           <Button
-  variant="primary"
+  variant="outline-dark"
   onClick={() => navigate('/modificar-cita', { state: { appointment: appointment } })}
 >
   {language === 'es' ? 'Modificar cita' : 'Modificar cita'}

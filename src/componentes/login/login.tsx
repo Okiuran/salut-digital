@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../idioma/preferencia-idioma.tsx';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Modal } from 'react-bootstrap';
+import { Form, Button, Modal, Container, Row, Col } from 'react-bootstrap';
 import { auth, db } from '../../firebase-config.ts';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
 import '../../utils/button.css';
+import '../../utils/auth.css';
 
 const LoginPage: React.FC = () => {
   const { translate } = useLanguage();
@@ -63,36 +64,52 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>{translate('login.title')}</h2>
-      <Form onSubmit={handleLogin}>
-        <Form.Group controlId="formEmail">
-          <Form.Label>{translate('login.emailLabel')}</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder={translate('login.emailPlaceholder')}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formPassword">
-          <Form.Label>{translate('login.passwordLabel')}</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder={translate('login.passwordPlaceholder')}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit" className="custom-submit-button">
-          {translate('login.loginButton')}
-        </Button>
-      </Form>
+    <Container className="auth-container">
+      <Row className="justify-content-center">
+        <Col xs={12} md={6}>
+          <h2 className="text-center mb-4">{translate('login.title')}</h2>
+          <Form onSubmit={handleLogin}>
+            <Form.Group controlId="formEmail" className="mb-3">
+              <Form.Label>{translate('login.emailLabel')}</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder={translate('login.emailPlaceholder')}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formPassword" className="mb-4">
+              <Form.Label>{translate('login.passwordLabel')}</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder={translate('login.passwordPlaceholder')}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="w-100 custom-submit-button">
+              {translate('login.loginButton')}
+            </Button>
+          </Form>
 
-      {/* Modal para mostrar mensajes */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <div className="text-center mt-4">
+            <Button variant="secondary" onClick={() => navigate('/')}>
+              {translate('login.goBackButton')}
+            </Button>
+          </div>
+
+          <div className="text-center mt-3">
+        <p>{translate('login.forgotPassword')}</p>
+        <Button variant="warning" onClick={() => navigate('/reset-password')}>
+          {translate('login.resetPasswordButton')}
+        </Button>
+      </div>
+        </Col>
+      </Row>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
@@ -103,18 +120,7 @@ const LoginPage: React.FC = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      <Button variant="secondary" onClick={() => navigate('/')}>
-        {translate('login.goBackButton')}
-      </Button>
-
-      <div className="mt-3">
-        <p>{translate('login.forgotPassword')}</p>
-        <Button variant="warning" onClick={() => navigate('/reset-password')}>
-          {translate('login.resetPasswordButton')}
-        </Button>
-      </div>
-    </div>
+    </Container>
   );
 };
 

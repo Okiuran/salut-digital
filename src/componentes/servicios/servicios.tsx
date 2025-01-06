@@ -11,6 +11,8 @@ import imagen3 from '../../assets/historial-medico.png'
 import imagen4 from '../../assets/salud-mental.jpg'
 import './servicios.css'
 
+import '../../utils/button.css';
+
 const Servicios: React.FC = () => {
   const { language } = useLanguage();
   const [index, setIndex] = useState(0);
@@ -92,7 +94,7 @@ const Servicios: React.FC = () => {
       {!isLoggedIn && (
         <Row className="mt-4">
           <Col className="d-flex justify-content-center">
-            <Button variant="primary" className="mx-2" onClick={() => navigate('/register')}>
+            <Button variant="primary" className="custom-submit-button" onClick={() => navigate('/register')}>
               {language === 'es' ? 'Registrarse' : 'Registrar-se'}
             </Button>
             <Button variant="secondary" className="mx-2" onClick={() => navigate('/login')}>

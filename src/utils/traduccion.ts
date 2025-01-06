@@ -102,7 +102,7 @@ export const translations = {
         passwordPlaceholder: 'Introdueix la teva contrasenya',
         loginButton: 'Iniciar sessió',
         modalTitleSuccess: 'Inici de sessió amb èxit',
-        modalMessageSuccess: 'Benvingut, ',
+        modalMessageSuccess: 'Benvingut/da, ',
         modalTitleError: 'Error amb l\'inici de sessió',
         modalMessageError: 'Error en iniciar sessió. Si us plau, verifica les teves credencials i que el compte estigui ja creat.',
         closeModalButton: 'Tancar',
