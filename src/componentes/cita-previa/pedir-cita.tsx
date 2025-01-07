@@ -67,19 +67,19 @@ const PedirCita: React.FC = () => {
       return;
     }
 
-    const selectedDate = new Date(fecha);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (selectedDate < today) {
+    const selectedDate = new Date(`${fecha}T${hora}`);
+    const now = new Date();
+
+    if (selectedDate < now) {
       setError(
         language === 'es'
-          ? 'La fecha seleccionada no puede ser anterior a hoy.'
-          : 'La data seleccionada no pot ser anterior a avui.'
+          ? 'La fecha y hora seleccionadas no pueden ser anteriores al momento actual.'
+          : 'La data i hora seleccionades no poden ser anteriors al moment actual.'
       );
       return;
     }
 
-    setError('');
+  setError('');
 
     try {
       const userId = auth.currentUser?.uid;
@@ -249,6 +249,11 @@ const PedirCita: React.FC = () => {
         >
           {language === 'es' ? 'Cancelar' : 'Cancel·lar'}
         </Button>
+        {error && (
+          <div className="alert alert-danger mt-3">
+            {error}
+          </div>
+        )}
       </Form>
     </div>
   );

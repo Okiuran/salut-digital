@@ -80,6 +80,18 @@ const ModificarCita: React.FC = () => {
       return;
     }
 
+    const selectedDateTime = new Date(`${appointment.fecha}T${appointment.hora}`);
+    const now = new Date();
+
+    if (selectedDateTime < now) {
+      setError(
+        language === 'es'
+          ? 'La fecha y hora seleccionadas no pueden ser anteriores a la actual.'
+          : 'La data i hora seleccionades no poden ser anteriors a l\'actual.'
+      );
+      return;
+    }
+
     setError('');
 
     try {
@@ -252,6 +264,11 @@ const ModificarCita: React.FC = () => {
         >
           {language === 'es' ? 'Cancelar' : 'Cancel·lar'}
         </Button>
+        {error && (
+          <div className="alert alert-danger mt-3">
+            {error}
+          </div>
+        )}
       </Form>
 </div>
   );
