@@ -26,6 +26,16 @@ export const validateNombre = (nombre: string, language: string): string => {
       : 'Format incorrecte de targeta sanitària.';
   };
 
+  export const validateEmail = (email: string, language: string): string => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email)
+      ? ''
+      : language === 'es'
+      ? 'El formato del email es incorrecto. Asegúrate de incluir "@" y un dominio válido.'
+      : 'El format del correu electrònic és incorrecte. Assegura’t d’incloure "@" i un domini vàlid.';
+  };
+
+
   export const validateDNI = (dni: string, language: string): string => {
     return /^\d{8}[A-Z]$/.test(dni)
       ? ''
@@ -35,6 +45,6 @@ export const validateNombre = (nombre: string, language: string): string => {
   };
 
   export const validatePassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/;
     return passwordRegex.test(password);
   };

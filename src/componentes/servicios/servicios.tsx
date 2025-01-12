@@ -21,7 +21,7 @@ const Servicios: React.FC = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user); // Si hay usuario, está logueado
+      setIsLoggedIn(!!user); // Usuario logueado
     });
     return () => unsubscribe(); // Limpia el listener al desmontar el componente
   }, []);

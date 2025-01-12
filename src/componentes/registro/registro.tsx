@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Container, Row, Col } from 'react-bootstrap';
 import { auth } from '../../firebase-config.ts';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { validatePassword } from '../../utils/validaciones.ts';
+import { validateEmail, validatePassword } from '../../utils/validaciones.ts';
 
 import '../../utils/button.css';
 import '../../utils/auth.css';
@@ -13,15 +13,33 @@ const RegisterPage: React.FC = () => {
   const { language, translate } = useLanguage();
   const navigate = useNavigate();
 
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+
   const [email, setEmail] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalTitle, setModalTitle] = useState('');
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    const validationMessage = validateEmail(inputEmail, language);
+    setIsEmailValid(validationMessage === '');
+    setEmailErrorMessage(validationMessage);
+  };
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isEmailValid) {
+      setModalTitle(translate('register.modalTitleError'));
+      setModalMessage(translate('register.invalidEmailError'));
+      setShowModal(true);
+      return;
+    }
 
     if (!validatePassword(password)) {
       setModalTitle(translate('register.modalTitleError'));
@@ -73,9 +91,13 @@ const RegisterPage: React.FC = () => {
                 type="email"
                 placeholder={translate('register.emailPlaceholder')}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
+                isInvalid={!isEmailValid}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                {translate('register.invalidEmailMessage')}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formPassword">
               <Form.Label>{translate('register.passwordLabel')}</Form.Label>
